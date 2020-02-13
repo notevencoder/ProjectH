@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="110">
+ <tileset firstgid="1" name="Idle" tilewidth="46" tileheight="56" tilecount="1" columns="1">
+  <image source="Sprites/11-Door/Idle.png" width="46" height="56"/>
+ </tileset>
+ <tileset firstgid="2" name="Decorations (32x32)" tilewidth="32" tileheight="32" tilecount="42" columns="7">
+  <image source="Sprites/14-TileSets/Decorations (32x32).png" width="224" height="192"/>
+ </tileset>
+ <tileset firstgid="44" name="Terrain (32x32)" tilewidth="32" tileheight="32" tilecount="247" columns="19">
+  <image source="Sprites/14-TileSets/Terrain (32x32).png" width="608" height="416"/>
+ </tileset>
+ <layer id="1" name="Ground" width="12" height="17">
+  <data encoding="base64" compression="zlib">
+   eAG1ksENgCAUQ1lNDzqAcNAFdAiHt//QpGkgwEGSnw/Jo7RATinlydrA353aRbNg3hsHAPr4mz9x1iK1mrkXa/VDX+zur8brHT0D+qEZOixu4dr9OE+O3XnPHPkjd4tnVu16putrXv6NyN3SVy0y2l1/lq/l1Te/4E2zjc4/GtE8yw==
+  </data>
+ </layer>
+ <layer id="2" name="BackGround" width="12" height="17">
+  <data encoding="base64" compression="zlib">
+   eAFjYKAP2AS0ZjMOvAWLE44CxY7hwMexqL8BFLuJhHci6cWmHt0IZPsGSj1yGJ0hwv3ofgb5H+RvYtwP8z/I3wOlHtm/sLQB8jcu92DzL8jPt2CeoQMNAEPhNhc=
+  </data>
+ </layer>
+ <layer id="3" name="Objects" width="12" height="17">
+  <data encoding="base64" compression="zlib">
+   eAFjYKAPkARaI4VmlTSQLwPEXGjiIK4CECuCGEhACchWBmJBJDFimMSo5wEaxAs1jFT18kQ4Atl8XMqxhQMutSBxCXySJMhxk6AWpJTa6tHTBi7zGaHuVADS6GkDKkVzCgB0gAJb
+  </data>
+ </layer>
+ <objectgroup id="6" name="ground">
+  <object id="20" x="32" y="32" width="32" height="32"/>
+  <object id="31" x="320" y="32" width="32" height="32"/>
+  <object id="47" x="320" y="480" width="32" height="32"/>
+  <object id="55" x="64" y="480" width="32" height="32"/>
+  <object id="83" x="32" y="160" width="32" height="32"/>
+  <object id="87" x="64" y="160" width="128" height="96"/>
+  <object id="90" x="64" y="256" width="32" height="64"/>
+  <object id="92" x="64" y="320" width="192" height="96"/>
+  <object id="93" x="64" y="416" width="32" height="64"/>
+  <object id="94" x="96" y="480" width="224" height="32"/>
+  <object id="95" x="320" y="64" width="32" height="416"/>
+  <object id="96" x="64" y="32" width="256" height="32"/>
+  <object id="97" x="32" y="64" width="32" height="96"/>
+ </objectgroup>
+ <objectgroup id="7" name="Doors" visible="0" locked="1">
+  <object id="98" x="95.8888" y="423.845" width="45.1241" height="55.5994"/>
+ </objectgroup>
+ <objectgroup id="8" name="Platforms">
+  <object id="103" x="192" y="223.875" width="64" height="7"/>
+  <object id="104" x="192" y="192" width="64" height="6.875"/>
+  <object id="105" x="192" y="160" width="64" height="6.875"/>
+  <object id="106" x="288" y="320" width="32.25" height="6.875"/>
+  <object id="107" x="288" y="352" width="31.875" height="6.875"/>
+  <object id="108" x="288" y="384" width="32" height="6.75"/>
+  <object id="109" x="288" y="416" width="32.125" height="6.875"/>
+ </objectgroup>
+</map>

@@ -1,0 +1,75 @@
+
+King.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Idle (78x58)
+  rotate: false
+  xy: 1, 181
+  size: 858, 58
+  orig: 858, 58
+  offset: 0, 0
+  index: -1
+Door In (78x58)
+  rotate: false
+  xy: 1, 121
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+Door Out (78x58)
+  rotate: false
+  xy: 1, 61
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+Run (78x58)
+  rotate: false
+  xy: 1, 1
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+Attack (78x58)
+  rotate: false
+  xy: 627, 121
+  size: 234, 58
+  orig: 234, 58
+  offset: 0, 0
+  index: -1
+Dead (78x58)
+  rotate: false
+  xy: 627, 61
+  size: 312, 58
+  orig: 312, 58
+  offset: 0, 0
+  index: -1
+Hit (78x58)
+  rotate: false
+  xy: 861, 181
+  size: 156, 58
+  orig: 156, 58
+  offset: 0, 0
+  index: -1
+Fall (78x58)
+  rotate: false
+  xy: 863, 121
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
+Ground (78x58)
+  rotate: false
+  xy: 627, 1
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
+Jump (78x58)
+  rotate: false
+  xy: 707, 1
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
