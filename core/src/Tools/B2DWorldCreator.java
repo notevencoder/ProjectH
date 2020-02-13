@@ -24,7 +24,7 @@ public class B2DWorldCreator {
         shape = new PolygonShape();
         fdef = new FixtureDef();
 
-
+        // Ground
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -35,10 +35,11 @@ public class B2DWorldCreator {
 
             shape.setAsBox((rect.getWidth() / 2) / Platformer.PPM,(rect.getHeight() / 2) / Platformer.PPM);
             fdef.shape = shape;
+            fdef.friction = 0;
             body.createFixture(fdef);
         }
 
-
+        // InteractiveObjects
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 

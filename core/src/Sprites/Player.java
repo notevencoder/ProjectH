@@ -19,6 +19,8 @@ public class Player extends Sprite {
         private State previousState;
         private Animation playerStanding;
         private Animation playerRunning;
+        private Animation playerFalling;
+        private Animation playerJumping;
         private float stateTimer;
         private boolean runningRight;
 
@@ -26,36 +28,11 @@ public class Player extends Sprite {
             //super(screen.getAtlas().findRegion("Run (78x58)"));
             this.world = world;
 
-            currentState = State.STANDING;
-            previousState = State.STANDING;
-            stateTimer = 0;
-            runningRight = true;
-
-            Array<TextureRegion> frames = new Array<TextureRegion>();
-            TextureRegion currRegion = screen.getAtlas().findRegion("Run (78x58)");
-            for (int i = 0; i < 8; i++){
-                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
-
-            }
-
-            playerRunning = new Animation(0.1f, frames);
-            frames.clear();
-
-            currRegion = screen.getAtlas().findRegion("Idle (78x58)");
-            for (int i = 0; i < 11; i++){
-                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
-
-            }
-
-            playerStanding = new Animation(0.1f, frames);
-            frames.clear();
-
-
             definePlayer();
+            defineAnimations(screen);
 
-            //idle = new TextureRegion(getTexture(), 0, 0, 78 , 58);
             setBounds(0,0, 78 / Platformer.PPM, 58 / Platformer.PPM);
-            //setRegion(idle);
+
         }
 
 
@@ -67,10 +44,15 @@ public class Player extends Sprite {
                     case RUNNING:
                         region = (TextureRegion) playerRunning.getKeyFrame(stateTimer,true);
                         break;
+                    case FALLING:
+                        region = (TextureRegion) playerFalling.getKeyFrame(stateTimer, true);
+                        break;
+                    case JUMPING:
+                        region = (TextureRegion) playerJumping.getKeyFrame(stateTimer,true);
+                        break;
                     case STANDING:
                     default:
                         region = (TextureRegion) playerStanding.getKeyFrame(stateTimer,true);
-
                         break;
                 }
 
@@ -82,6 +64,7 @@ public class Player extends Sprite {
                     region.flip(true,false);
                     runningRight = true;
                 }
+
                 stateTimer = currentState == previousState ? stateTimer + dt : 0;
                 previousState = currentState;
                 return region;
@@ -89,7 +72,7 @@ public class Player extends Sprite {
         }
 
         public State getState(){
-            if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)) return State.JUMPING;
+            if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
             else if (b2body.getLinearVelocity().y < 0)return State.FALLING;
             else if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
             else return State.STANDING;
@@ -116,5 +99,46 @@ public class Player extends Sprite {
             fdef.shape = shape;
             b2body.createFixture(fdef);
         }
+        public void defineAnimations(PlatScreen screen){
+            currentState = State.STANDING;
+            previousState = State.STANDING;
+            stateTimer = 0;
+            runningRight = true;
+
+            Array<TextureRegion> frames = new Array<TextureRegion>();
+
+            // Анимация бега
+            TextureRegion currRegion = screen.getAtlas().findRegion("Run (78x58)");
+            for (int i = 0; i < 8; i++){
+                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
+
+            }
+
+            playerRunning = new Animation(0.1f, frames);
+            frames.clear();
+
+            // анимация стаяния
+            currRegion = screen.getAtlas().findRegion("Idle (78x58)");
+            for (int i = 0; i < 11; i++){
+                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
+
+            }
+            playerStanding = new Animation(0.1f, frames);
+            frames.clear();
+
+            // Анимация прыжка
+            currRegion = screen.getAtlas().findRegion("Jump (78x58)");
+            frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
+            playerJumping = new Animation(0.1f, frames);
+            frames.clear();
+
+
+            currRegion = screen.getAtlas().findRegion("Fall (78x58)");
+            frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
+            playerFalling = new Animation(0.1f, frames);
+            frames.clear();
+
+        }
+
 
 }
