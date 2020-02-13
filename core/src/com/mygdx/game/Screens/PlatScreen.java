@@ -40,7 +40,7 @@ public class PlatScreen implements Screen {
     private TextureAtlas atlas;
 
     public PlatScreen(Platformer GAME){
-        atlas = new TextureAtlas("Sprites/15-Atlases/atlas.atlas");
+        atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
         //new Player(world);
         hud = new Hud(game.batch);
