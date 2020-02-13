@@ -1,0 +1,712 @@
+
+atlas.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+01-King Human/Idle (78x58)
+  rotate: false
+  xy: 1, 181
+  size: 858, 58
+  orig: 858, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Door In (78x58)
+  rotate: false
+  xy: 1, 121
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Door Out (78x58)
+  rotate: false
+  xy: 1, 61
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Run (78x58)
+  rotate: false
+  xy: 1, 1
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Attack (78x58)
+  rotate: false
+  xy: 627, 121
+  size: 234, 58
+  orig: 234, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Dead (78x58)
+  rotate: false
+  xy: 627, 61
+  size: 312, 58
+  orig: 312, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Hit (78x58)
+  rotate: false
+  xy: 861, 181
+  size: 156, 58
+  orig: 156, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Fall (78x58)
+  rotate: false
+  xy: 863, 121
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Ground (78x58)
+  rotate: false
+  xy: 627, 1
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
+01-King Human/Jump (78x58)
+  rotate: false
+  xy: 707, 1
+  size: 78, 58
+  orig: 78, 58
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+02-King Pig/Idle (38x28)
+  rotate: false
+  xy: 1, 31
+  size: 456, 28
+  orig: 456, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Run (38x28)
+  rotate: false
+  xy: 1, 1
+  size: 228, 28
+  orig: 228, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Attack (38x28)
+  rotate: false
+  xy: 459, 31
+  size: 190, 28
+  orig: 190, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Dead (38x28)
+  rotate: false
+  xy: 231, 1
+  size: 152, 28
+  orig: 152, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Hit (38x28)
+  rotate: false
+  xy: 651, 31
+  size: 76, 28
+  orig: 76, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Fall (38x28)
+  rotate: false
+  xy: 385, 1
+  size: 38, 28
+  orig: 38, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Ground (38x28)
+  rotate: false
+  xy: 729, 31
+  size: 38, 28
+  orig: 38, 28
+  offset: 0, 0
+  index: -1
+02-King Pig/Jump (38x28)
+  rotate: false
+  xy: 425, 1
+  size: 38, 28
+  orig: 38, 28
+  offset: 0, 0
+  index: -1
+
+atlas3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+03-Pig/Idle (34x28)
+  rotate: false
+  xy: 1, 31
+  size: 374, 28
+  orig: 374, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Run (34x28)
+  rotate: false
+  xy: 1, 1
+  size: 204, 28
+  orig: 204, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Attack (34x28)
+  rotate: false
+  xy: 377, 31
+  size: 170, 28
+  orig: 170, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Dead (34x28)
+  rotate: false
+  xy: 207, 1
+  size: 136, 28
+  orig: 136, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Hit (34x28)
+  rotate: false
+  xy: 549, 31
+  size: 68, 28
+  orig: 68, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Fall (34x28)
+  rotate: false
+  xy: 345, 1
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Ground (34x28)
+  rotate: false
+  xy: 619, 31
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1
+03-Pig/Jump (34x28)
+  rotate: false
+  xy: 381, 1
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1
+
+atlas4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+04-Pig Throwing a Box/Idle (26x30)
+  rotate: false
+  xy: 1, 1
+  size: 234, 30
+  orig: 234, 30
+  offset: 0, 0
+  index: -1
+04-Pig Throwing a Box/Run (26x30)
+  rotate: false
+  xy: 237, 1
+  size: 156, 30
+  orig: 156, 30
+  offset: 0, 0
+  index: -1
+04-Pig Throwing a Box/Picking Box (26x30)
+  rotate: false
+  xy: 395, 1
+  size: 130, 30
+  orig: 130, 30
+  offset: 0, 0
+  index: -1
+04-Pig Throwing a Box/Throwing Box (26x30)
+  rotate: false
+  xy: 527, 1
+  size: 130, 30
+  orig: 130, 30
+  offset: 0, 0
+  index: -1
+
+atlas5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+05-Pig Thowing a Bomb/Idle (26x26)
+  rotate: false
+  xy: 1, 1
+  size: 260, 26
+  orig: 260, 26
+  offset: 0, 0
+  index: -1
+05-Pig Thowing a Bomb/Run (26x26)
+  rotate: false
+  xy: 263, 1
+  size: 156, 26
+  orig: 156, 26
+  offset: 0, 0
+  index: -1
+05-Pig Thowing a Bomb/Throwing Boom (26x26)
+  rotate: false
+  xy: 421, 1
+  size: 130, 26
+  orig: 130, 26
+  offset: 0, 0
+  index: -1
+05-Pig Thowing a Bomb/Picking Bomb (26x26)
+  rotate: false
+  xy: 553, 1
+  size: 104, 26
+  orig: 104, 26
+  offset: 0, 0
+  index: -1
+
+atlas6.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+06-Pig Hide in the Box/Looking Out (26x20)
+  rotate: false
+  xy: 1, 1
+  size: 78, 20
+  orig: 78, 20
+  offset: 0, 0
+  index: -1
+06-Pig Hide in the Box/Jump (26x20)
+  rotate: false
+  xy: 81, 1
+  size: 52, 20
+  orig: 52, 20
+  offset: 0, 0
+  index: -1
+06-Pig Hide in the Box/Jump Anticipation (26x20)
+  rotate: false
+  xy: 135, 1
+  size: 52, 20
+  orig: 52, 20
+  offset: 0, 0
+  index: -1
+06-Pig Hide in the Box/Fall (26x20)
+  rotate: false
+  xy: 189, 1
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1
+06-Pig Hide in the Box/Ground (26x20)
+  rotate: false
+  xy: 217, 1
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1
+
+atlas7.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+07-Pig With a Match/Lighting the Cannon (26x18)
+  rotate: false
+  xy: 1, 1
+  size: 78, 18
+  orig: 78, 18
+  offset: 0, 0
+  index: -1
+07-Pig With a Match/Lighting the Match (26x18)
+  rotate: false
+  xy: 81, 1
+  size: 78, 18
+  orig: 78, 18
+  offset: 0, 0
+  index: -1
+07-Pig With a Match/Match On (26x18)
+  rotate: false
+  xy: 161, 1
+  size: 78, 18
+  orig: 78, 18
+  offset: 0, 0
+  index: -1
+
+atlas8.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+08-Box/Hit
+  rotate: false
+  xy: 1, 13
+  size: 22, 16
+  orig: 22, 16
+  offset: 0, 0
+  index: -1
+08-Box/Idle
+  rotate: false
+  xy: 25, 13
+  size: 22, 16
+  orig: 22, 16
+  offset: 0, 0
+  index: -1
+08-Box/Box Pieces 1
+  rotate: false
+  xy: 1, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+08-Box/Box Pieces 2
+  rotate: false
+  xy: 49, 19
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+08-Box/Box Pieces 3
+  rotate: false
+  xy: 13, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+08-Box/Box Pieces 4
+  rotate: false
+  xy: 25, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+
+atlas9.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+09-Bomb/Boooooom (52x56)
+  rotate: false
+  xy: 1, 1
+  size: 312, 56
+  orig: 312, 56
+  offset: 0, 0
+  index: -1
+09-Bomb/Bomb On (52x56)
+  rotate: false
+  xy: 315, 1
+  size: 208, 56
+  orig: 208, 56
+  offset: 0, 0
+  index: -1
+09-Bomb/Bomb Off
+  rotate: false
+  xy: 525, 1
+  size: 52, 56
+  orig: 52, 56
+  offset: 0, 0
+  index: -1
+
+atlas10.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+10-Cannon/Shoot (44x28)
+  rotate: false
+  xy: 1, 1
+  size: 176, 28
+  orig: 176, 28
+  offset: 0, 0
+  index: -1
+10-Cannon/Cannon Ball
+  rotate: false
+  xy: 179, 1
+  size: 44, 28
+  orig: 44, 28
+  offset: 0, 0
+  index: -1
+10-Cannon/Idle
+  rotate: false
+  xy: 225, 1
+  size: 44, 28
+  orig: 44, 28
+  offset: 0, 0
+  index: -1
+
+atlas11.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+11-Door/Opening (46x56)
+  rotate: false
+  xy: 1, 1
+  size: 230, 56
+  orig: 230, 56
+  offset: 0, 0
+  index: -1
+11-Door/Closiong (46x56)
+  rotate: false
+  xy: 233, 1
+  size: 138, 56
+  orig: 138, 56
+  offset: 0, 0
+  index: -1
+11-Door/Idle
+  rotate: false
+  xy: 373, 1
+  size: 46, 56
+  orig: 46, 56
+  offset: 0, 0
+  index: -1
+
+atlas12.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+12-Live and Coins/Live Bar
+  rotate: false
+  xy: 1, 29
+  size: 66, 34
+  orig: 66, 34
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Big Diamond Idle (18x14)
+  rotate: false
+  xy: 69, 49
+  size: 180, 14
+  orig: 180, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Big Heart Idle (18x14)
+  rotate: false
+  xy: 69, 33
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Big Diamond Hit (18x14)
+  rotate: false
+  xy: 215, 33
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Small Diamond (18x14)
+  rotate: false
+  xy: 69, 17
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Small Heart Idle (18x14)
+  rotate: false
+  xy: 1, 1
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Numbers (6x8)
+  rotate: false
+  xy: 1, 19
+  size: 60, 8
+  orig: 60, 8
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Big Heart Hit (18x14)
+  rotate: false
+  xy: 215, 17
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
+12-Live and Coins/Small Heart Hit (18x14)
+  rotate: false
+  xy: 147, 1
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
+
+atlas13.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+13-Dialogue Boxes/!!! In (24x8)
+  rotate: false
+  xy: 1, 37
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Attack In (24x8)
+  rotate: false
+  xy: 1, 19
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Boom In (24x8)
+  rotate: false
+  xy: 105, 37
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Dead In (24x8)
+  rotate: false
+  xy: 1, 1
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Hello In (24x8)
+  rotate: false
+  xy: 105, 19
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Hi In (24x8)
+  rotate: false
+  xy: 209, 37
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Interrogation In (24x8)
+  rotate: false
+  xy: 105, 1
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Loser In (24x8)
+  rotate: false
+  xy: 209, 19
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/No In (24x8)
+  rotate: false
+  xy: 313, 37
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/WTF In (24x8)
+  rotate: false
+  xy: 209, 1
+  size: 102, 16
+  orig: 102, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/!!! Out (24x8)
+  rotate: false
+  xy: 313, 19
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Attack Out (24x8)
+  rotate: false
+  xy: 417, 37
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Boom Out (24x8)
+  rotate: false
+  xy: 313, 1
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Dead Out (24x8)
+  rotate: false
+  xy: 383, 19
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Hello Out (24x8)
+  rotate: false
+  xy: 487, 37
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Hi Out (24x8)
+  rotate: false
+  xy: 383, 1
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Interrogation Out (24x8)
+  rotate: false
+  xy: 453, 19
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/Loser Out (24x8)
+  rotate: false
+  xy: 557, 37
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/No Out (24x8)
+  rotate: false
+  xy: 453, 1
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+13-Dialogue Boxes/WTF Out (24x8)
+  rotate: false
+  xy: 523, 19
+  size: 68, 16
+  orig: 68, 16
+  offset: 0, 0
+  index: -1
+
+atlas14.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+14-TileSets/Terrain (32x32)
+  rotate: false
+  xy: 1, 1
+  size: 608, 416
+  orig: 608, 416
+  offset: 0, 0
+  index: -1
+14-TileSets/Terrain
+  rotate: false
+  xy: 1, 1
+  size: 608, 416
+  orig: 608, 416
+  offset: 0, 0
+  index: -1
+14-TileSets/Decorations (32x32)
+  rotate: false
+  xy: 611, 225
+  size: 224, 192
+  orig: 224, 192
+  offset: 0, 0
+  index: -1
+14-TileSets/Decorations
+  rotate: false
+  xy: 611, 225
+  size: 224, 192
+  orig: 224, 192
+  offset: 0, 0
+  index: -1
+
+atlas15.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Kings and Pigs
+  rotate: false
+  xy: 1, 1
+  size: 134, 14
+  orig: 134, 14
+  offset: 0, 0
+  index: -1
