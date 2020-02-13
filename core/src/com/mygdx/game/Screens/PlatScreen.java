@@ -74,7 +74,7 @@ public class PlatScreen implements Screen {
 
     public void handleInput(float dt){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) /*&& (player.getState() != Player.State.FALLING && player.getState() != Player.State.JUMPING)*/)
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && (player.getState() != Player.State.FALLING && player.getState() != Player.State.JUMPING))
             player.b2body.applyLinearImpulse(new Vector2(0,4 ),player.b2body.getWorldCenter(),true);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             player.b2body.setLinearVelocity(2,player.b2body.getLinearVelocity().y);

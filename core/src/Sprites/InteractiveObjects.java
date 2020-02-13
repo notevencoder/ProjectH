@@ -7,14 +7,14 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.mygdx.game.Platformer;
 
-public abstract class InterectiveObjects {
+public abstract class InteractiveObjects {
     protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
-    public InterectiveObjects(World world, TiledMap map, Rectangle bounds){
+    public InteractiveObjects(World world, TiledMap map, Rectangle bounds){
         this.bounds = bounds;
         this.map = map;
         this.world = world;
@@ -29,6 +29,7 @@ public abstract class InterectiveObjects {
         body = world.createBody(bdef);
         shape.setAsBox((bounds.getWidth() / 2) / Platformer.PPM, (bounds.getHeight() / 2) / Platformer.PPM);
         fdef.shape = shape;
+        fdef.friction = 0;
 
         fixture = body.createFixture(fdef);
 
