@@ -14,7 +14,7 @@ public class Player extends Sprite {
         public Body b2body;
         TextureRegion idle;
         // объявляем переменные для Анимации
-        private enum State {STANDING, JUMPING, RUNNING, FALLING};
+        public enum State {STANDING, JUMPING, RUNNING, FALLING};
         private State currentState;
         private State previousState;
         private Animation playerStanding;
@@ -94,7 +94,10 @@ public class Player extends Sprite {
 
             FixtureDef fdef = new FixtureDef();
             CircleShape shape = new CircleShape();
-            shape.setRadius(10 / Platformer.PPM);
+            shape.setRadius(11 / Platformer.PPM);
+
+            fdef.filter.categoryBits = Platformer.PLAYER_BIT;
+            fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT;
 
             fdef.shape = shape;
             b2body.createFixture(fdef);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="98">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="110">
  <tileset firstgid="1" name="Idle" tilewidth="46" tileheight="56" tilecount="1" columns="1">
   <image source="Sprites/11-Door/Idle.png" width="46" height="56"/>
  </tileset>
@@ -39,14 +39,16 @@
   <object id="96" x="64" y="32" width="256" height="32"/>
   <object id="97" x="32" y="64" width="32" height="96"/>
  </objectgroup>
- <objectgroup id="5" name="InteractiveObjects" visible="0">
-  <object id="3" x="193.081" y="158.697" width="63.4788" height="7.27361"/>
-  <object id="4" x="193.081" y="191.098" width="63.4788" height="6.61237"/>
-  <object id="8" x="193.081" y="222.176" width="64.14" height="8.59609"/>
-  <object id="9" x="289.622" y="318.716" width="30.4169" height="7.27361"/>
-  <object id="10" x="288.3" y="349.795" width="31.7394" height="7.93485"/>
-  <object id="11" x="288.3" y="382.856" width="32.4006" height="6.61237"/>
-  <object id="12" x="289.622" y="413.935" width="31.7394" height="8.59609"/>
-  <object id="14" x="96" y="416" width="44.8436" height="63.3971"/>
+ <objectgroup id="7" name="Doors" visible="0" locked="1">
+  <object id="98" x="95.8888" y="423.845" width="45.1241" height="55.5994"/>
+ </objectgroup>
+ <objectgroup id="8" name="Platforms">
+  <object id="103" x="192" y="223.875" width="64" height="7"/>
+  <object id="104" x="192" y="192" width="64" height="6.875"/>
+  <object id="105" x="192" y="160" width="64" height="6.875"/>
+  <object id="106" x="288" y="320" width="32.25" height="6.875"/>
+  <object id="107" x="288" y="352" width="31.875" height="6.875"/>
+  <object id="108" x="288" y="384" width="32" height="6.75"/>
+  <object id="109" x="288" y="416" width="32.125" height="6.875"/>
  </objectgroup>
 </map>

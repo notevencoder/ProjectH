@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import Sprites.Player;
 import Tools.B2DWorldCreator;
+import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Scenes.Hud;
+import sun.security.krb5.internal.SeqNumber;
 
 public class PlatScreen implements Screen {
 
@@ -64,13 +66,16 @@ public class PlatScreen implements Screen {
         new B2DWorldCreator(world, map);
 
         player = new Player(world, this);
+
+        world.setContactListener(new WorldContactListener());
     }
     public TextureAtlas getAtlas(){
         return atlas;
     }
 
     public void handleInput(float dt){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) /*&& (player.getState() != Player.State.FALLING && player.getState() != Player.State.JUMPING)*/)
             player.b2body.applyLinearImpulse(new Vector2(0,4 ),player.b2body.getWorldCenter(),true);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             player.b2body.setLinearVelocity(2,player.b2body.getLinearVelocity().y);
@@ -144,6 +149,10 @@ public class PlatScreen implements Screen {
 
     @Override
     public void dispose() {
+        map.dispose();
+        renderer.dispose();
+        b2dr.dispose();
+        world.dispose();
 
     }
 }

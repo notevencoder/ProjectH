@@ -1,5 +1,7 @@
 package Tools;
 
+import Sprites.Door;
+import Sprites.Platforms;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -43,14 +45,12 @@ public class B2DWorldCreator {
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth()/2) / Platformer.PPM, (rect.getY() + rect.getHeight() / 2) / Platformer.PPM);
+            new Door(world, map, rect);
+        }
+        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth() / 2)  / Platformer.PPM,(rect.getHeight() / 2)  / Platformer.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
+            new Platforms(world, map, rect);
         }
 
     }
