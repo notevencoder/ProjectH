@@ -1,5 +1,7 @@
 package com.mygdx.game.Screens;
 
+import Sprites.Player;
+import Tools.B2DWorldCreator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -8,6 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Platformer;
@@ -26,33 +31,63 @@ public class PlatScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
+    // объявляем world Box2d
+    private World world;
+    private Box2DDebugRenderer b2dr;
+    private Player player;
+
     public PlatScreen(Platformer GAME){
         this.game = GAME;
-
+        //new Player(world);
         hud = new Hud(game.batch);
 
         gamecam = new OrthographicCamera();
-        gamePort = new FitViewport(Platformer.V_WIDTH, Platformer.V_HEIGHT,  gamecam);
+        gamePort = new FitViewport(Platformer.V_WIDTH  / Platformer.PPM, Platformer.V_HEIGHT  / Platformer.PPM,  gamecam);
 
         // инициализация карты
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("test3.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map,1 / Platformer.PPM);
 
-        //устанавливаем камеру
+        // устанавливаем камеру
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        // инициализация world
+        world = new World(new Vector2(0,-10 ),true);
+        b2dr = new Box2DDebugRenderer();
+
+        new B2DWorldCreator(world, map);
+
+        player = new Player(world);
+
     }
 
     public void handleInput(float dt){
-        if (Gdx.input.isTouched())
-            gamecam.position.x += 100 * dt;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+            player.b2body.applyLinearImpulse(new Vector2(0,4 ),player.b2body.getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= (2))
+            player.b2body.applyLinearImpulse(new Vector2(0.1f,0),player.b2body.getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -(2))
+            player.b2body.applyLinearImpulse(new Vector2(-0.1f,0),player.b2body.getWorldCenter(),true);
+
+    }
+
+    public Viewport getPort(){
+        return gamePort;
 
     }
 
     public void update (float dt){
         handleInput(dt);
+
+        world.step(1/60f,6,2);
+
+        gamecam.position.x = player.b2body.getPosition().x;
+
         gamecam.update();
         renderer.setView(gamecam);
+
+
     }
 
     @Override
@@ -67,7 +102,7 @@ public class PlatScreen implements Screen {
 
         update(delta);
         renderer.render();
-
+        b2dr.render(world, gamecam.combined);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 

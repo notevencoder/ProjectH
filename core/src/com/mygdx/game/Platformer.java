@@ -9,6 +9,7 @@ public class Platformer extends Game {
 
 	public final static int V_WIDTH = 384;
 	public final static int V_HEIGHT = 544;
+	public final static float PPM = 100;
 
 
 	@Override
