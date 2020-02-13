@@ -61,13 +61,12 @@ public class PlatScreen implements Screen {
 
         // инициализация world
         world = new World(new Vector2(0,-10 ),true);
+        world.setContactListener(new WorldContactListener());
         b2dr = new Box2DDebugRenderer();
 
         new B2DWorldCreator(world, map);
 
         player = new Player(world, this);
-
-        world.setContactListener(new WorldContactListener());
     }
     public TextureAtlas getAtlas(){
         return atlas;
