@@ -36,7 +36,7 @@ public class B2DWorldCreator {
             shape.setAsBox((rect.getWidth() / 2) / Platformer.PPM,(rect.getHeight() / 2) / Platformer.PPM);
             fdef.shape = shape;
             fdef.friction = 0;
-            body.createFixture(fdef);
+            body.createFixture(fdef).setUserData("ground");
         }
 
         // InteractiveObjects

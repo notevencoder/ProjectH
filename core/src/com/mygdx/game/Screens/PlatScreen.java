@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import Sprites.Player;
 import Tools.B2DWorldCreator;
+import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -59,6 +60,7 @@ public class PlatScreen implements Screen {
 
         // инициализация world
         world = new World(new Vector2(0,-10 ),true);
+        world.setContactListener(new WorldContactListener());
         b2dr = new Box2DDebugRenderer();
 
         new B2DWorldCreator(world, map);
@@ -70,7 +72,9 @@ public class PlatScreen implements Screen {
     }
 
     public void handleInput(float dt){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)
+                //&& player.getState() != Player.State.JUMPING && player.getState() != Player.State.FALLING
+        )
             player.b2body.applyLinearImpulse(new Vector2(0,4 ),player.b2body.getWorldCenter(),true);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             player.b2body.setLinearVelocity(2,player.b2body.getLinearVelocity().y);

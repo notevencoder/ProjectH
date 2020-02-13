@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
@@ -14,7 +15,7 @@ public class Player extends Sprite {
         public Body b2body;
         TextureRegion idle;
         // объявляем переменные для Анимации
-        private enum State {STANDING, JUMPING, RUNNING, FALLING};
+        public enum State {STANDING, JUMPING, RUNNING, FALLING};
         private State currentState;
         private State previousState;
         private Animation playerStanding;
@@ -26,6 +27,7 @@ public class Player extends Sprite {
 
         public Player(World world, PlatScreen screen){
             //super(screen.getAtlas().findRegion("Run (78x58)"));
+
             this.world = world;
 
             definePlayer();
@@ -78,7 +80,7 @@ public class Player extends Sprite {
             else return State.STANDING;
         }
         public void update(float dt){
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setPosition(b2body.getPosition().x - getWidth() / 2 , b2body.getPosition().y - getHeight() / 2);
             setRegion(getFrame(dt));
         }
 
@@ -93,11 +95,27 @@ public class Player extends Sprite {
             b2body = world.createBody(bdef);
 
             FixtureDef fdef = new FixtureDef();
-            CircleShape shape = new CircleShape();
-            shape.setRadius(10 / Platformer.PPM);
-
+//            CircleShape shape = new CircleShape();
+//            shape.setRadius(10 / Platformer.PPM);
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(2 / Platformer.PPM, 10 / Platformer.PPM);
             fdef.shape = shape;
             b2body.createFixture(fdef);
+
+            EdgeShape hitBox = new EdgeShape();
+            fdef.isSensor = true;
+            hitBox.set(new Vector2(.5f / Platformer.PPM, 10 / Platformer.PPM), new Vector2(-0.5f / Platformer.PPM, 10 / Platformer.PPM));
+            fdef.shape = hitBox;
+            b2body.createFixture(fdef).setUserData("Head");
+            hitBox.set(new Vector2(.5f / Platformer.PPM, -10 / Platformer.PPM), new Vector2(-.5f / Platformer.PPM, -10 / Platformer.PPM));
+            fdef.shape = hitBox;
+            b2body.createFixture(fdef).setUserData("Legs");
+            hitBox.set(new Vector2(2 / Platformer.PPM, -.5f / Platformer.PPM), new Vector2(2 / Platformer.PPM, .5f / Platformer.PPM));
+            fdef.shape = hitBox;
+            b2body.createFixture(fdef).setUserData("Right");
+            hitBox.set(new Vector2(-2 / Platformer.PPM, -.5f / Platformer.PPM), new Vector2(-2 / Platformer.PPM, .5f / Platformer.PPM));
+            fdef.shape = hitBox;
+            b2body.createFixture(fdef).setUserData("Left");
         }
         public void defineAnimations(PlatScreen screen){
             currentState = State.STANDING;
