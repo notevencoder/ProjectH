@@ -49,7 +49,6 @@ public class B2DWorldCreator {
         }
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
             new Platforms(world, map, rect);
         }
 

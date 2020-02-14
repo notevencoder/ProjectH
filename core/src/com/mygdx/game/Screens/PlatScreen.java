@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import Sprites.Player;
 import Tools.B2DWorldCreator;
+import Tools.UpdateQueue;
 import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -40,7 +41,7 @@ public class PlatScreen implements Screen {
     private Player player;
 
     private TextureAtlas atlas;
-
+    public static UpdateQueue updateQueue;
     public PlatScreen(Platformer GAME){
         atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
@@ -55,6 +56,7 @@ public class PlatScreen implements Screen {
         map = mapLoader.load("test3.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,1 / Platformer.PPM);
 
+        updateQueue = new UpdateQueue();
 
         // устанавливаем камеру
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -74,7 +76,9 @@ public class PlatScreen implements Screen {
 
     public void handleInput(float dt){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && (player.getState() != Player.State.FALLING && player.getState() != Player.State.JUMPING))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)
+                //&& (player.getState() != Player.State.FALLING && player.getState() != Player.State.JUMPING)
+        )
             player.b2body.applyLinearImpulse(new Vector2(0,4 ),player.b2body.getWorldCenter(),true);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             player.b2body.setLinearVelocity(2,player.b2body.getLinearVelocity().y);
@@ -93,7 +97,7 @@ public class PlatScreen implements Screen {
         handleInput(dt);
 
         world.step(1/60f,6,2);
-
+        updateQueue.update(dt);
         player.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;

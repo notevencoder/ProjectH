@@ -1,6 +1,5 @@
 package Sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,6 +23,7 @@ public class Player extends Sprite {
         private Animation playerJumping;
         private float stateTimer;
         private boolean runningRight;
+        public boolean stepped = false;
 
         public Player(World world, PlatScreen screen){
             //super(screen.getAtlas().findRegion("Run (78x58)"));
@@ -84,6 +84,9 @@ public class Player extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10 , b2body.getPosition().y - getHeight() / 2);
             else
                 setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10 , b2body.getPosition().y - getHeight() / 2);
+            if (stepped){
+                b2body.linVelLoc.y = 0;
+            }
             setRegion(getFrame(dt));
         }
 
