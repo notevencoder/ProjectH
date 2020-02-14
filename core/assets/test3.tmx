@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="110">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="113">
  <tileset firstgid="1" name="Idle" tilewidth="46" tileheight="56" tilecount="1" columns="1">
   <image source="Sprites/11-Door/Idle.png" width="46" height="56"/>
  </tileset>
@@ -21,7 +21,7 @@
  </layer>
  <layer id="3" name="Objects" width="12" height="17">
   <data encoding="base64" compression="zlib">
-   eAFjYKAPkARaI4VmlTSQLwPEXGjiIK4CECuCGEhACchWBmJBJDFimMSo5wEaxAs1jFT18kQ4Atl8XMqxhQMutSBxCXySJMhxk6AWpJTa6tHTBi7zGaHuVADS6GkDKkVzCgB0gAJb
+   eAFjYKAPkARaI4VmlTSQLwPEXGjiIK4CECuCGEhACchWBmJBJDFimLRQzwO0mBdquTwRjkBWj0s5tnDApRYkLoFPkgQ5bhLUgpRSWz162sBlPiPUnQpAGj1tQKVoTgEAPswCQg==
   </data>
  </layer>
  <objectgroup id="6" name="ground">
@@ -45,7 +45,6 @@
  <objectgroup id="8" name="Platforms">
   <object id="103" x="192" y="223.875" width="64" height="7"/>
   <object id="104" x="192" y="192" width="64" height="6.875"/>
-  <object id="105" x="192" y="160" width="64" height="6.875"/>
   <object id="106" x="288" y="320" width="32.25" height="6.875"/>
   <object id="107" x="288" y="352" width="31.875" height="6.875"/>
   <object id="108" x="288" y="384" width="32" height="6.75"/>

@@ -12,7 +12,7 @@ public class WorldContactListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (fixtureA.getUserData() =="Head" || fixtureB.getUserData() == "Head")
+        if (fixtureA.getUserData() == "Head" || fixtureB.getUserData() == "Head")
             Gdx.app.log("contact", "Head begin");
         else if (fixtureA.getUserData() == "Legs" || fixtureB.getUserData() == "Legs")
             Gdx.app.log("contact", "Legs begin");
@@ -20,20 +20,6 @@ public class WorldContactListener implements ContactListener {
             Gdx.app.log("contact", "Left begin");
         else if (fixtureA.getUserData() == "Right" || fixtureB.getUserData() == "Right")
             Gdx.app.log("contact", "Right begin");
-
-        if (fixtureA.getUserData() != null && fixtureA.getUserData().getClass() == Platforms.class) {
-            if (fixtureB.getUserData() == "Legs"){
-                ((Platforms)fixtureA.getUserData()).stepped = true;
-                PlatScreen.updateQueue.add((Platforms)fixtureA.getUserData());
-            }
-        }
-        if (fixtureB.getUserData() != null && fixtureB.getUserData().getClass() == Platforms.class) {
-            if (fixtureA.getUserData() == "Legs"){
-                ((Platforms)fixtureB.getUserData()).stepped = true;
-                PlatScreen.updateQueue.add((Platforms)fixtureB.getUserData());
-            }
-
-        }
 
 
     }
@@ -45,15 +31,15 @@ public class WorldContactListener implements ContactListener {
         Fixture fixtureB = contact.getFixtureB();
 
         if (fixtureA.getUserData() != null && fixtureA.getUserData().getClass() == Platforms.class) {
-            if (fixtureB.getUserData() == "Legs"){
-                ((Platforms)fixtureA.getUserData()).stepped = false;
-                PlatScreen.updateQueue.add((Platforms)fixtureA.getUserData());
+            if (fixtureB.getUserData() == "Legs") {
+                ((Platforms) fixtureA.getUserData()).stepped = false;
+                PlatScreen.updateQueue.add((Platforms) fixtureA.getUserData());
             }
         }
         if (fixtureB.getUserData() != null && fixtureB.getUserData().getClass() == Platforms.class) {
-            if (fixtureA.getUserData() == "Legs"){
-                ((Platforms)fixtureB.getUserData()).stepped = false;
-                PlatScreen.updateQueue.add((Platforms)fixtureB.getUserData());
+            if (fixtureA.getUserData() == "Legs") {
+                ((Platforms) fixtureB.getUserData()).stepped = false;
+                PlatScreen.updateQueue.add((Platforms) fixtureB.getUserData());
             }
         }
     }

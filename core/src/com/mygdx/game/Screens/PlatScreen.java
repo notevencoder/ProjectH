@@ -38,7 +38,7 @@ public class PlatScreen implements Screen {
     // объявляем world Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
-    private Player player;
+    public static Player player;
 
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;

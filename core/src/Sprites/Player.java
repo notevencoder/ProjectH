@@ -15,6 +15,7 @@ public class Player extends Sprite {
     public World world;
     public Body b2body;
     TextureRegion idle;
+    public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
     public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING}
@@ -45,21 +46,19 @@ public class Player extends Sprite {
 
         if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)
             attacking = false;
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
             attacking = true;
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
             //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
         )
             b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
             b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
             b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
         else
             b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
-
-
     }
 
     public TextureRegion getFrame(float dt) {
@@ -134,14 +133,14 @@ public class Player extends Sprite {
 //            CircleShape shape = new CircleShape();
 //            shape.setRadius(10 / Platformer.PPM);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM);
+        shape.setAsBox(WIDTH / 2, HEIGHT / 2);
 
 
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
         fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape hitBox = new EdgeShape();
         fdef.isSensor = true;
@@ -157,6 +156,12 @@ public class Player extends Sprite {
         hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
         fdef.shape = hitBox;
         b2body.createFixture(fdef).setUserData("Left");
+        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(20 / Platformer.PPM, 0), 0);
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData("AttackRight");
+        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-20 / Platformer.PPM, 0), 0);
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData("AttackLeft");
     }
 
     public void defineAnimations(PlatScreen screen) {
