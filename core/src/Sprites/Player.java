@@ -1,5 +1,7 @@
 package Sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,165 +12,199 @@ import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
 public class Player extends Sprite {
-        public World world;
-        public Body b2body;
-        TextureRegion idle;
-        // объявляем переменные для Анимации
-        public enum State {STANDING, JUMPING, RUNNING, FALLING};
-        private State currentState;
-        private State previousState;
-        private Animation playerStanding;
-        private Animation playerRunning;
-        private Animation playerFalling;
-        private Animation playerJumping;
-        private float stateTimer;
-        private boolean runningRight;
-        public boolean stepped = false;
+    public World world;
+    public Body b2body;
+    TextureRegion idle;
 
-        public Player(World world, PlatScreen screen){
-            //super(screen.getAtlas().findRegion("Run (78x58)"));
+    // объявляем переменные для Анимации
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING}
 
-            this.world = world;
 
-            definePlayer();
-            defineAnimations(screen);
+    private State currentState;
+    private State previousState;
+    private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
+            animationAttack, animationDead, animationDoorIn, animationDoorOut, animationHit;
+    private float stateTimer;
+    private boolean runningRight;
+    public boolean stepped = false;
+    private boolean attacking = false;
 
-            setBounds(0,0, 78 / Platformer.PPM, 58 / Platformer.PPM);
+    public Player(World world, PlatScreen screen) {
+        //super(screen.getAtlas().findRegion("Run (78x58)"));
 
+        this.world = world;
+
+        definePlayer();
+        defineAnimations(screen);
+
+        setBounds(0, 0, 78 / Platformer.PPM, 58 / Platformer.PPM);
+
+    }
+
+    public void handleInput(float dt) {
+
+        if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)
+            attacking = false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F))
+            attacking = true;
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)
+            //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
+        )
+            b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
+        else
+            b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+
+
+    }
+
+    public TextureRegion getFrame(float dt) {
+        currentState = getState();
+        if (currentState != previousState)
+            stateTimer = 0;
+        TextureRegion region;
+
+        switch (currentState) {
+            case ATTACKING:
+                region = (TextureRegion) animationAttack.getKeyFrame(stateTimer);
+                break;
+            case RUNNING:
+                region = (TextureRegion) animationRun.getKeyFrame(stateTimer, true);
+                break;
+            case FALLING:
+                region = (TextureRegion) animationFall.getKeyFrame(stateTimer, true);
+                break;
+            case JUMPING:
+                region = (TextureRegion) animationJump.getKeyFrame(stateTimer, true);
+                break;
+            case STANDING:
+            default:
+                region = (TextureRegion) animationIdle.getKeyFrame(stateTimer, true);
+                break;
         }
 
-
-        public TextureRegion getFrame(float dt){
-                currentState = getState();
-                TextureRegion region;
-
-                switch(currentState){
-                    case RUNNING:
-                        region = (TextureRegion) playerRunning.getKeyFrame(stateTimer,true);
-                        break;
-                    case FALLING:
-                        region = (TextureRegion) playerFalling.getKeyFrame(stateTimer, true);
-                        break;
-                    case JUMPING:
-                        region = (TextureRegion) playerJumping.getKeyFrame(stateTimer,true);
-                        break;
-                    case STANDING:
-                    default:
-                        region = (TextureRegion) playerStanding.getKeyFrame(stateTimer,true);
-                        break;
-                }
-
-                if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
-                    region.flip(true,false);
-                    runningRight = false;
-                }
-                else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
-                    region.flip(true,false);
-                    runningRight = true;
-                }
-
-                stateTimer = currentState == previousState ? stateTimer + dt : 0;
-                previousState = currentState;
-                return region;
-
+        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = false;
+        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = true;
         }
 
-        public State getState(){
-            if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
-            else if (b2body.getLinearVelocity().y < 0)return State.FALLING;
-            else if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
-            else return State.STANDING;
+        stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        previousState = currentState;
+        return region;
+
+    }
+
+    public State getState() {
+        previousState = currentState;
+        if (attacking) return State.ATTACKING;
+        if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
+        if (b2body.getLinearVelocity().y < 0) return State.FALLING;
+        if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
+        return State.STANDING;
+    }
+
+    public void update(float dt) {
+        if (runningRight)
+            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+        else
+            setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+        if (stepped) {
+            b2body.linVelLoc.y = 0;
         }
-        public void update(float dt){
-            if (runningRight)
-            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10 , b2body.getPosition().y - getHeight() / 2);
-            else
-                setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10 , b2body.getPosition().y - getHeight() / 2);
-            if (stepped){
-                b2body.linVelLoc.y = 0;
-            }
-            setRegion(getFrame(dt));
-        }
+        setRegion(getFrame(dt));
+    }
 
 
-        public void definePlayer(){
-            BodyDef bdef = new BodyDef();
+    public void definePlayer() {
+        BodyDef bdef = new BodyDef();
 
 
+        bdef.position.set(200 / Platformer.PPM, 100 / Platformer.PPM);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
 
-            bdef.position.set(200 / Platformer.PPM,100 / Platformer.PPM);
-            bdef.type = BodyDef.BodyType.DynamicBody;
-            b2body = world.createBody(bdef);
-
-            FixtureDef fdef = new FixtureDef();
+        FixtureDef fdef = new FixtureDef();
 //            CircleShape shape = new CircleShape();
 //            shape.setRadius(10 / Platformer.PPM);
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM);
 
 
+        fdef.filter.categoryBits = Platformer.PLAYER_BIT;
+        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT;
 
-            fdef.filter.categoryBits = Platformer.PLAYER_BIT;
-            fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT;
+        fdef.shape = shape;
+        b2body.createFixture(fdef);
 
-            fdef.shape = shape;
-            b2body.createFixture(fdef);
+        EdgeShape hitBox = new EdgeShape();
+        fdef.isSensor = true;
+        hitBox.set(new Vector2(2f / Platformer.PPM, 10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, 10 / Platformer.PPM));
+        fdef.shape = hitBox;
+        b2body.createFixture(fdef).setUserData("Head");
+        hitBox.set(new Vector2(2f / Platformer.PPM, -10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, -10 / Platformer.PPM));
+        fdef.shape = hitBox;
+        b2body.createFixture(fdef).setUserData("Legs");
+        hitBox.set(new Vector2(10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(10 / Platformer.PPM, 2f / Platformer.PPM));
+        fdef.shape = hitBox;
+        b2body.createFixture(fdef).setUserData("Right");
+        hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
+        fdef.shape = hitBox;
+        b2body.createFixture(fdef).setUserData("Left");
+    }
 
-            EdgeShape hitBox = new EdgeShape();
-            fdef.isSensor = true;
-            hitBox.set(new Vector2(2f / Platformer.PPM, 10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, 10 / Platformer.PPM));
-            fdef.shape = hitBox;
-            b2body.createFixture(fdef).setUserData("Head");
-            hitBox.set(new Vector2(2f / Platformer.PPM, -10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, -10 / Platformer.PPM));
-            fdef.shape = hitBox;
-            b2body.createFixture(fdef).setUserData("Legs");
-            hitBox.set(new Vector2(10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(10 / Platformer.PPM, 2f / Platformer.PPM));
-            fdef.shape = hitBox;
-            b2body.createFixture(fdef).setUserData("Right");
-            hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
-            fdef.shape = hitBox;
-            b2body.createFixture(fdef).setUserData("Left");
-        }
-        public void defineAnimations(PlatScreen screen){
-            currentState = State.STANDING;
-            previousState = State.STANDING;
-            stateTimer = 0;
-            runningRight = true;
+    public void defineAnimations(PlatScreen screen) {
+        currentState = State.STANDING;
+        previousState = State.STANDING;
+        stateTimer = 0;
+        runningRight = true;
 
-            Array<TextureRegion> frames = new Array<TextureRegion>();
+        Array<TextureRegion> frames = new Array<TextureRegion>();
 
-            // Анимация бега
-            TextureRegion currRegion = screen.getAtlas().findRegion("Run (78x58)");
-            for (int i = 0; i < 8; i++){
-                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
-
-            }
-
-            playerRunning = new Animation(0.1f, frames);
-            frames.clear();
-
-            // анимация стаяния
-            currRegion = screen.getAtlas().findRegion("Idle (78x58)");
-            for (int i = 0; i < 11; i++){
-                frames.add(new TextureRegion(currRegion, i*78, 0, 78, 58));
-
-            }
-            playerStanding = new Animation(0.1f, frames);
-            frames.clear();
-
-            // Анимация прыжка
-            currRegion = screen.getAtlas().findRegion("Jump (78x58)");
-            frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
-            playerJumping = new Animation(0.1f, frames);
-            frames.clear();
-
-
-            currRegion = screen.getAtlas().findRegion("Fall (78x58)");
-            frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
-            playerFalling = new Animation(0.1f, frames);
-            frames.clear();
+        // Анимация бега
+        TextureRegion currRegion = screen.getAtlas().findRegion("Run (78x58)");
+        for (int i = 0; i < 8; i++) {
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
 
         }
+
+        animationRun = new Animation(0.1f, frames);
+        frames.clear();
+
+        // анимация стояния
+        currRegion = screen.getAtlas().findRegion("Idle (78x58)");
+        for (int i = 0; i < 11; i++) {
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+
+        }
+        animationIdle = new Animation(0.1f, frames);
+        frames.clear();
+
+        // Анимация прыжка
+        currRegion = screen.getAtlas().findRegion("Jump (78x58)");
+        frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
+        animationJump = new Animation(0.1f, frames);
+        frames.clear();
+
+        // Анимация падения
+        currRegion = screen.getAtlas().findRegion("Fall (78x58)");
+        frames.add(new TextureRegion(currRegion, 0, 0, 78, 58));
+        animationFall = new Animation(0.1f, frames);
+        frames.clear();
+
+        currRegion = screen.getAtlas().findRegion("Attack (78x58)");
+        for (int i = 0; i < 3; i++)
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+        animationAttack = new Animation(0.1f, frames);
+        frames.clear();
+
+    }
 
 
 }
