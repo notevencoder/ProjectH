@@ -1,14 +1,17 @@
 package Sprites;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.mygdx.game.Platformer;
+import com.mygdx.game.Screens.PlatScreen;
 
-public abstract class InteractiveObjects {
+public abstract class InteractiveObjects extends Sprite {
     protected World world;
+
     protected TiledMap map;
     protected TiledMapTile tile;
     protected Rectangle bounds;
@@ -18,6 +21,7 @@ public abstract class InteractiveObjects {
         this.bounds = bounds;
         this.map = map;
         this.world = world;
+
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();

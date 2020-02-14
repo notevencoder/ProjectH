@@ -1,5 +1,6 @@
 package Tools;
 
+import Sprites.Door;
 import Sprites.Platforms;
 import Sprites.Player;
 import com.badlogic.gdx.Gdx;
@@ -20,7 +21,8 @@ public class WorldContactListener implements ContactListener {
             Gdx.app.log("contact", "Left begin");
         else if (fixtureA.getUserData() == "Right" || fixtureB.getUserData() == "Right")
             Gdx.app.log("contact", "Right begin");
-
+        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class)
+            Gdx.app.log("contact", "DOOR");
 
     }
 
@@ -30,18 +32,10 @@ public class WorldContactListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (fixtureA.getUserData() != null && fixtureA.getUserData().getClass() == Platforms.class) {
-            if (fixtureB.getUserData() == "Legs") {
-                ((Platforms) fixtureA.getUserData()).stepped = false;
-                PlatScreen.updateQueue.add((Platforms) fixtureA.getUserData());
-            }
-        }
-        if (fixtureB.getUserData() != null && fixtureB.getUserData().getClass() == Platforms.class) {
-            if (fixtureA.getUserData() == "Legs") {
-                ((Platforms) fixtureB.getUserData()).stepped = false;
-                PlatScreen.updateQueue.add((Platforms) fixtureB.getUserData());
-            }
-        }
+        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class)
+            Gdx.app.log("End.contact", "DOOR");
+
+
     }
 
     @Override

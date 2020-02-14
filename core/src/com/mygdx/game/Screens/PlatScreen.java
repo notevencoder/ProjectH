@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -66,7 +67,7 @@ public class PlatScreen implements Screen {
         world.setContactListener(new WorldContactListener());
         b2dr = new Box2DDebugRenderer();
 
-        new B2DWorldCreator(world, map);
+        new B2DWorldCreator(world, map, this);
 
         player = new Player(world, this);
     }
@@ -114,6 +115,7 @@ public class PlatScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -123,6 +125,11 @@ public class PlatScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+    }
+
+    public SpriteBatch getBatch(){
+        return game.batch;
+
     }
 
     @Override

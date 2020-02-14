@@ -63,8 +63,7 @@ public class Player extends Sprite {
 
     public TextureRegion getFrame(float dt) {
         currentState = getState();
-        if (currentState != previousState)
-            stateTimer = 0;
+
         TextureRegion region;
 
         switch (currentState) {
@@ -114,9 +113,7 @@ public class Player extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
         else
             setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
-        if (stepped) {
-            b2body.linVelLoc.y = 0;
-        }
+        //
         setRegion(getFrame(dt));
     }
 
@@ -137,7 +134,7 @@ public class Player extends Sprite {
 
 
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
-        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT;
+        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -168,6 +165,7 @@ public class Player extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
+
         runningRight = true;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();

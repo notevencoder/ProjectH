@@ -18,6 +18,7 @@ public class Platforms extends InteractiveObjects implements Updatable {
         SetCategoryFilter(Platformer.PLATFORM_BIT);
         PlatScreen.updateQueue.addForever(this);
     }
+
     @Override
     public void update(float dt){
         if (PlatScreen.player.b2body.getPosition().y - PlatScreen.player.HEIGHT / 2 < this.body.getPosition().y)

@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Platformer;
+import com.mygdx.game.Screens.PlatScreen;
 
 import java.awt.*;
 
@@ -19,7 +20,7 @@ public class B2DWorldCreator {
     FixtureDef fdef;
     PolygonShape shape;
 
-    public B2DWorldCreator(World world, TiledMap map){
+    public B2DWorldCreator(World world, TiledMap map, PlatScreen screen){
         this.map = map;
         this.world = world;
         bdef = new BodyDef();
