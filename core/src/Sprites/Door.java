@@ -1,9 +1,11 @@
 package Sprites;
 
+import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
-public class Door extends InteractiveObjects implements Updatable {
+public class Door extends InteractiveObjects implements Updatable, Drawable {
 
     public enum State {OPENNING, IDLE, CLOSING}
 
@@ -41,11 +43,15 @@ public class Door extends InteractiveObjects implements Updatable {
         fixture.setSensor(true);
         PlatScreen.updateQueue.addForever(this);
 
-        PlatScreen.updateQueue.addToDrawable(this);
         PlatScreen.updateQueue.addForever(this);
+        PlatScreen.drawQueue.add(this);
         setRegion((TextureRegion) openning.getKeyFrame(0, true));
         setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM , 46/ Platformer.PPM, 56 / Platformer.PPM);
 
+    }
+    @Override
+    public void drawMe(SpriteBatch batch){
+        draw(batch);
     }
 
     private void defineAnimations() {
@@ -107,10 +113,6 @@ public class Door extends InteractiveObjects implements Updatable {
 
     @Override
     public void update(float dt) {
-        //setPosition(bounds.getX()/ Platformer.PPM, bounds.getY() / Platformer.PPM);
         setRegion(getFrame(dt));
-
-        Gdx.app.log("Door", "Updated");
-
     }
 }

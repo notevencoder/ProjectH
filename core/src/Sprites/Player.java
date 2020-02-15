@@ -14,7 +14,6 @@ import com.mygdx.game.Screens.PlatScreen;
 public class Player extends Sprite {
     public World world;
     public Body b2body;
-    TextureRegion idle;
     public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
@@ -26,14 +25,13 @@ public class Player extends Sprite {
     private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
             animationAttack, animationDead, animationDoorIn, animationDoorOut, animationHit;
     private float stateTimer;
-    private boolean runningRight;
-    public boolean stepped = false;
-    private boolean attacking = false;
+    public boolean runningRight;
+    public boolean attacking = false;
 
-    public Player(World world, PlatScreen screen) {
+    public Player(PlatScreen screen) {
         //super(screen.getAtlas().findRegion("Run (78x58)"));
 
-        this.world = world;
+        this.world = screen.getWorld();
 
         definePlayer();
         defineAnimations(screen);
@@ -131,12 +129,11 @@ public class Player extends Sprite {
 //            shape.setRadius(10 / Platformer.PPM);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
-
+        fdef.shape = shape;
 
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
         fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT;
 
-        fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape hitBox = new EdgeShape();
@@ -153,10 +150,10 @@ public class Player extends Sprite {
         hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
         fdef.shape = hitBox;
         b2body.createFixture(fdef).setUserData("Left");
-        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(20 / Platformer.PPM, 0), 0);
+        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(30 / Platformer.PPM, 0), 0);
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("AttackRight");
-        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-20 / Platformer.PPM, 0), 0);
+        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-30 / Platformer.PPM, 0), 0);
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("AttackLeft");
     }
