@@ -27,9 +27,9 @@ public class Player extends Sprite {
     private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
             animationAttack, animationDead, animationDoorIn, animationDoorOut, animationHit, entertheDoor;
     private float stateTimer;
-    private boolean runningRight;
+    public boolean runningRight;
     public boolean stepped = false;
-    private boolean attacking = false;
+    public boolean attacking = false;
     private Animation currentAnimation;
 
     private static boolean entering;
@@ -61,7 +61,7 @@ public class Player extends Sprite {
 
     public void handleInput(float dt) {
         if (!entering) {
-            if (Gdx.input.isKeyPressed(Input.Keys.E) && canInteractWith != null) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && canInteractWith != null) {
                 canInteractWith.Interact(this);
             }
             if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)

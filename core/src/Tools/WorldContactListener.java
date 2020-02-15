@@ -54,7 +54,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             case Platformer.ENEMY_BIT | Platformer.PLAYER_BIT: {
-                Fixture player;
+
                 Fixture enemy;
                 if (fixtureA.getFilterData().categoryBits == Platformer.PLAYER_BIT){
                     player = fixtureA;
@@ -105,7 +105,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             case Platformer.ENEMY_BIT | Platformer.PLAYER_BIT: {
-                Fixture player;
+
                 Fixture enemy;
                 if (fixtureA.getFilterData().categoryBits == Platformer.PLAYER_BIT){
                     player = fixtureA;

@@ -46,7 +46,7 @@ public class PlatScreen implements Screen {
     // объявляем world Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
-    private Player player;
+    private static Player player;
     Enemy enemy;
 
     private TextureAtlas atlas;
@@ -172,7 +172,7 @@ public class PlatScreen implements Screen {
 
     }
 
-    public static Player getPlayer(){
+    public  static Player getPlayer(){
         return player;
     }
 
@@ -183,4 +183,5 @@ public class PlatScreen implements Screen {
     public TiledMap getMap() {
         return map;
     }
+
 }
