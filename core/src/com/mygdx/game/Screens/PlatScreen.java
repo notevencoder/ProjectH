@@ -4,19 +4,24 @@ import Sprites.Player;
 import Tools.B2DWorldCreator;
 import Tools.UpdateQueue;
 import Tools.WorldContactListener;
+import Tools.WorldStateListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Platformer;
@@ -67,7 +72,7 @@ public class PlatScreen implements Screen {
         world.setContactListener(new WorldContactListener());
         b2dr = new Box2DDebugRenderer();
 
-        new B2DWorldCreator(world, map, this);
+        new B2DWorldCreator( this);
 
         player = new Player(world, this);
     }
@@ -75,8 +80,8 @@ public class PlatScreen implements Screen {
         return atlas;
     }
 
-    public void handleInput(float dt){
 
+    public void handleInput(float dt){
         player.handleInput(dt);
     }
 
@@ -112,8 +117,10 @@ public class PlatScreen implements Screen {
         update(delta);
         renderer.render();
         b2dr.render(world, gamecam.combined);
+
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+
         updateQueue.Draw(game.batch);
         player.draw(game.batch);
 
@@ -123,15 +130,26 @@ public class PlatScreen implements Screen {
         hud.stage.draw();
     }
 
+
+
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
     }
 
-    public SpriteBatch getBatch(){
+    public static SpriteBatch getBatch(){
         return game.batch;
 
     }
+    public static TiledMap getMap(){
+        return map;
+
+    }
+    public static World getWorld(){
+        return world;
+
+    }
+
 
     @Override
     public void pause() {
@@ -157,7 +175,7 @@ public class PlatScreen implements Screen {
 
     }
 
-    public Player getPlayer(){
+    public static Player getPlayer(){
         return player;
     }
 }

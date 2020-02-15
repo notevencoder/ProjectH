@@ -1,6 +1,7 @@
 package Tools;
 
 import Sprites.Door;
+import Sprites.InteractiveObjects;
 import Sprites.Platforms;
 import Sprites.Player;
 import com.badlogic.gdx.Gdx;
@@ -13,6 +14,9 @@ public class WorldContactListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
+        Fixture object;
+        Fixture player;
+
         if (fixtureA.getUserData() == "Head" || fixtureB.getUserData() == "Head")
             Gdx.app.log("contact", "Head begin");
         else if (fixtureA.getUserData() == "Legs" || fixtureB.getUserData() == "Legs")
@@ -21,8 +25,22 @@ public class WorldContactListener implements ContactListener {
             Gdx.app.log("contact", "Left begin");
         else if (fixtureA.getUserData() == "Right" || fixtureB.getUserData() == "Right")
             Gdx.app.log("contact", "Right begin");
-        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class)
-            Gdx.app.log("contact", "DOOR");
+        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class){
+
+            if (fixtureA.getUserData().getClass() == Door.class){
+                object = fixtureA;
+                player = fixtureB;
+            }
+            else{
+                object = fixtureB;
+                player = fixtureA;
+            }
+            PlatScreen.getPlayer().setCanInteractWithNow((InteractiveObjects) object.getUserData());
+
+
+
+        }
+
 
     }
 
@@ -32,8 +50,25 @@ public class WorldContactListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class)
-            Gdx.app.log("End.contact", "DOOR");
+        Fixture object;
+        Fixture player;
+
+        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class){
+
+            if (fixtureA.getUserData().getClass() == Door.class){
+                object = fixtureA;
+                player = fixtureB;
+            }
+            else{
+                object = fixtureB;
+                player = fixtureA;
+            }
+
+            PlatScreen.getPlayer().setCanInteractWithNow(null);
+
+
+
+        }
 
 
     }

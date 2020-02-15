@@ -14,25 +14,33 @@ import com.mygdx.game.Screens.PlatScreen;
 public class Player extends Sprite {
     public World world;
     public Body b2body;
+
     TextureRegion idle;
     public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
-    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING}
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING,ENTER_THE_DOOR}
 
 
     private State currentState;
     private State previousState;
     private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
-            animationAttack, animationDead, animationDoorIn, animationDoorOut, animationHit;
+            animationAttack, animationDead, animationDoorIn, animationDoorOut, animationHit, entertheDoor;
     private float stateTimer;
     private boolean runningRight;
     public boolean stepped = false;
     private boolean attacking = false;
+    private Animation currentAnimation;
+
+    private static boolean entering;
+
+
+    private static InteractiveObjects canInteractWith = null;
+    private static InteractiveObjects interactingWithNow = null;
 
     public Player(World world, PlatScreen screen) {
         //super(screen.getAtlas().findRegion("Run (78x58)"));
-
+        entering = false;
         this.world = world;
 
         definePlayer();
@@ -41,46 +49,68 @@ public class Player extends Sprite {
         setBounds(0, 0, 78 / Platformer.PPM, 58 / Platformer.PPM);
     }
 
+    public static void setCanInteractWithNow(InteractiveObjects objects){
+        canInteractWith = (InteractiveObjects) objects;
+    }
+
+    public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects){
+        return canInteractWith;
+    }
+
     public void handleInput(float dt) {
+        if (!entering) {
+            if (Gdx.input.isKeyPressed(Input.Keys.E) && canInteractWith != null) {
+                canInteractWith.Interact(this);
+            }
+            if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)
+                attacking = false;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+                attacking = true;
 
-        if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)
-            attacking = false;
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
-            attacking = true;
-
-        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
-            //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
-        )
-            b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
-            b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-            b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
-        else
-            b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
+                //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
+            )
+                b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+                b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
+            else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+                b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
+            else
+                b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+        }
     }
 
     public TextureRegion getFrame(float dt) {
-        currentState = getState();
+        currentState = getState(dt);
 
         TextureRegion region;
 
         switch (currentState) {
             case ATTACKING:
                 region = (TextureRegion) animationAttack.getKeyFrame(stateTimer);
+                currentAnimation = animationAttack;
                 break;
             case RUNNING:
                 region = (TextureRegion) animationRun.getKeyFrame(stateTimer, true);
+                currentAnimation = animationRun;
                 break;
             case FALLING:
                 region = (TextureRegion) animationFall.getKeyFrame(stateTimer, true);
+                currentAnimation = animationFall;
                 break;
             case JUMPING:
                 region = (TextureRegion) animationJump.getKeyFrame(stateTimer, true);
+                currentAnimation = animationJump;
+                break;
+            case ENTER_THE_DOOR:
+                region = (TextureRegion) entertheDoor.getKeyFrame(stateTimer);
+
+                currentAnimation = entertheDoor;
                 break;
             case STANDING:
             default:
                 region = (TextureRegion) animationIdle.getKeyFrame(stateTimer, true);
+                currentAnimation = animationIdle;
                 break;
         }
 
@@ -98,13 +128,24 @@ public class Player extends Sprite {
 
     }
 
-    public State getState() {
-        previousState = currentState;
-        if (attacking) return State.ATTACKING;
-        if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
-        if (b2body.getLinearVelocity().y < 0) return State.FALLING;
-        if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
-        return State.STANDING;
+    public State getState(float dt) {
+        if (!entering){
+            previousState = currentState;
+            if (attacking) return State.ATTACKING;
+            if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
+            if (b2body.getLinearVelocity().y < 0) return State.FALLING;
+            if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
+            return State.STANDING;
+        } else{
+            if (((Door)interactingWithNow).getCurrentAnimation().isAnimationFinished(((Door)interactingWithNow).getStateTimer())){
+                  return State.ENTER_THE_DOOR;
+            } else return State.STANDING;
+        }
+    }
+
+    public static void  Interact(InteractiveObjects object){
+        entering = true;
+        interactingWithNow = object;
     }
 
     public void update(float dt) {
@@ -130,6 +171,7 @@ public class Player extends Sprite {
 //            CircleShape shape = new CircleShape();
 //            shape.setRadius(10 / Platformer.PPM);
         PolygonShape shape = new PolygonShape();
+
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
 
 
@@ -179,6 +221,15 @@ public class Player extends Sprite {
 
         animationRun = new Animation(0.1f, frames);
         frames.clear();
+        // Анимация входа
+        currRegion = screen.getAtlas().findRegion("Door In (78x58)");
+        for (int i = 0; i < 8; i++) {
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+
+        }
+        frames.add(new TextureRegion(currRegion, 0, 0, 0, 0));
+        entertheDoor = new Animation(0.1f, frames);
+        frames.clear();
 
         // анимация стояния
         currRegion = screen.getAtlas().findRegion("Idle (78x58)");
@@ -209,5 +260,11 @@ public class Player extends Sprite {
 
     }
 
+    public Animation getCurrentAnimation() {
+        return currentAnimation;
+    }
 
+    public float getStateTimer() {
+        return stateTimer;
+    }
 }

@@ -14,14 +14,15 @@ public abstract class InteractiveObjects extends Sprite {
 
     protected TiledMap map;
     protected TiledMapTile tile;
-    protected Rectangle bounds;
+    protected static Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
-    public InteractiveObjects(World world, TiledMap map, Rectangle bounds){
+    protected PlatScreen screen;
+    public InteractiveObjects(PlatScreen screen, Rectangle bounds){
         this.bounds = bounds;
-        this.map = map;
-        this.world = world;
-
+        this.map = screen.getMap();
+        this.world = screen.getWorld();
+        this.screen = screen;
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -46,4 +47,5 @@ public abstract class InteractiveObjects extends Sprite {
 
     }
 
+    public abstract void Interact(Player player);
 }

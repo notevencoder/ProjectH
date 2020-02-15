@@ -3,23 +3,37 @@ Door.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Opening (46x56)
+Door In (78x58)
+  rotate: false
+  xy: 1, 61
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+Door Out (78x58)
   rotate: false
   xy: 1, 1
+  size: 624, 58
+  orig: 624, 58
+  offset: 0, 0
+  index: -1
+Opening (46x56)
+  rotate: false
+  xy: 627, 63
   size: 230, 56
   orig: 230, 56
   offset: 0, 0
   index: -1
 Closing (46x56)
   rotate: false
-  xy: 233, 1
+  xy: 627, 5
   size: 138, 56
   orig: 138, 56
   offset: 0, 0
   index: -1
 Idle
   rotate: false
-  xy: 373, 1
+  xy: 859, 63
   size: 46, 56
   orig: 46, 56
   offset: 0, 0
