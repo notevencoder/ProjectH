@@ -4,18 +4,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public class DrawQueue {
-    private Array<Drawable> arr = new Array<Drawable>();
+    private Array<Array<Drawable>> arr = new Array<Array<Drawable>>();
 
     public void draw(SpriteBatch batch){
-        for (Drawable i : arr)
-            i.drawMe(batch);
+        for (int j = arr.size - 1; j >=0; j--)
+            for (Drawable i : arr.get(j))
+                i.drawMe(batch);
     }
 
-    public void add(Drawable obj){
-        arr.add(obj);
+    public void add(Drawable obj, int layer){
+        while (arr.size <= layer + 1)
+            arr.add(new Array<Drawable>());
+        arr.get(layer).add(obj);
     }
     public void remove(Drawable obj){
-        arr.removeValue(obj, true);
+        for (Array<Drawable> i : arr)
+            i.removeValue(obj, true);
     }
 
 }

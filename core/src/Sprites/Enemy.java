@@ -66,7 +66,7 @@ public class Enemy extends Sprite implements Updatable, Drawable {
     private void defineEnemy() {
 
         setToDestroy = destroyed = false;
-        screen.drawQueue.add(this);
+        screen.drawQueue.add(this, 0);
 
         BodyDef bdef = new BodyDef();
         bdef.position.set(250 / Platformer.PPM, 200 / Platformer.PPM);

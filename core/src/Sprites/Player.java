@@ -1,17 +1,21 @@
 package Sprites;
 
+import Tools.Drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
+import org.graalvm.compiler.replacements.aarch64.PluginFactory_AArch64FloatArithmeticSnippets;
 
-public class Player extends Sprite {
+public class Player extends Sprite implements Drawable {
     public World world;
     public Body b2body;
 
@@ -21,7 +25,7 @@ public class Player extends Sprite {
     // объявляем переменные для Анимации
     public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING,ENTER_THE_DOOR}
 
-
+    private Screen screen;
     private State currentState;
     private State previousState;
     private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
@@ -40,7 +44,7 @@ public class Player extends Sprite {
 
     public Player(PlatScreen screen) {
         //super(screen.getAtlas().findRegion("Run (78x58)"));
-
+        this.screen = screen;
         this.world = screen.getWorld();
         entering = false;
         this.world = world;
@@ -53,6 +57,16 @@ public class Player extends Sprite {
 
     public static void setCanInteractWithNow(InteractiveObjects objects){
         canInteractWith = (InteractiveObjects) objects;
+    }
+
+    public void update(float dt) {
+        if (runningRight)
+            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+        else
+            setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+        //
+        setRegion(getFrame(dt));
+
     }
 
     public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects){
@@ -80,6 +94,10 @@ public class Player extends Sprite {
             else
                 b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
         }
+    }
+    @Override
+    public void drawMe(SpriteBatch batch){
+        draw(batch);
     }
 
     public TextureRegion getFrame(float dt) {
@@ -144,20 +162,14 @@ public class Player extends Sprite {
             } else return State.STANDING;
         }
     }
-
     public static void  Interact(InteractiveObjects object){
         entering = true;
         interactingWithNow = object;
     }
 
-    public void update(float dt) {
-        if (runningRight)
-            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
-        else
-            setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
-        //
-        setRegion(getFrame(dt));
-
+    public void onEnter(){
+        world.destroyBody(b2body);
+        PlatScreen.drawQueue.remove(this);
     }
 
 

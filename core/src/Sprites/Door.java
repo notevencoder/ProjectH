@@ -16,8 +16,9 @@ import com.sun.tools.javac.comp.Enter;
 public class Door extends InteractiveObjects implements Updatable, Drawable {
 
     public enum State {OPEN, IDLE, CLOSE}
+
     private boolean Entering;
-    private Animation opening;
+    public Animation opening;
     private Animation closing;
     private Animation idle;
     private Animation currentAnimation;
@@ -43,14 +44,15 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
         PlatScreen.updateQueue.addForever(this);
 
         PlatScreen.updateQueue.addForever(this);
-        PlatScreen.drawQueue.add(this);
+        PlatScreen.drawQueue.add(this, 2);
         //setRegion((TextureRegion) openning.getKeyFrame(0, true));
         setRegion((TextureRegion) opening.getKeyFrame(0, true));
-        setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM , 46/ Platformer.PPM, 56 / Platformer.PPM);
+        setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM, 46 / Platformer.PPM, 56 / Platformer.PPM);
 
     }
+
     @Override
-    public void drawMe(SpriteBatch batch){
+    public void drawMe(SpriteBatch batch) {
         draw(batch);
     }
 
@@ -76,14 +78,14 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
         curRegion = atlas.findRegion("Closing (46x56)");
         for (int i = 0; i < 3; i++)
             frames.add(new TextureRegion(curRegion, i * 46, 0, 46, 56));
-        closing = new Animation(0.8f, frames);
+        closing = new Animation(0.1f, frames);
         frames.clear();
 
         //Анимация открытия
         curRegion = atlas.findRegion("Opening (46x56)");
         for (int i = 0; i < 5; i++)
             frames.add(new TextureRegion(curRegion, i * 46, 0, 46, 56));
-        opening = new Animation(0.5f, frames);
+        opening = new Animation(0.1f, frames);
         frames.clear();
         //Анимация покоя
         curRegion = atlas.findRegion("Idle");
@@ -97,14 +99,15 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
 
     private State getState(float dt) {
         //Gdx.app.log("getState" , "Enter");
-        if (Entering){
+        if (Entering) {
             //Gdx.app.log("getState" , "Entering");
-            if (currentAnimation.isAnimationFinished(getStateTimer())){
+            if (currentAnimation.isAnimationFinished(getStateTimer())) {
 
                 //Gdx.app.log("DoorState", "AnimationFinished");
-                if(currentAnimation == opening && interector.getState(dt) != Player.State.STANDING &&interector.getCurrentAnimation().isAnimationFinished(interector.getStateTimer())){
+                if (currentAnimation == opening && interector.getState(dt) != Player.State.STANDING && interector.getCurrentAnimation().isAnimationFinished(interector.getStateTimer())) {
                     Gdx.app.log("DoorState", "Close");
-                        return State.CLOSE;
+                    screen.getPlayer().onEnter();
+                    return State.CLOSE;
                 }
 
             } else return curState;
@@ -116,7 +119,7 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
         /**/
     }
 
-    public static Rectangle getBounds(){
+    public static Rectangle getBounds() {
         return bounds;
 
     }
@@ -136,7 +139,7 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
             case CLOSE:
                 region = (TextureRegion) closing.getKeyFrame(stateTimer);
                 currentAnimation = closing;
-                Gdx.app.log("getFrame" , "Close");
+                Gdx.app.log("getFrame", "Close");
                 break;
             case IDLE:
             default:
@@ -152,12 +155,12 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
         return region;
     }
 
-    public Animation getCurrentAnimation(){
+    public Animation getCurrentAnimation() {
         return currentAnimation;
 
     }
 
-    public float getStateTimer(){
+    public float getStateTimer() {
         return stateTimer;
 
     }

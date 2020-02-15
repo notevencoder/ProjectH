@@ -81,19 +81,8 @@ public class PlatScreen implements Screen {
 
         player = new Player(this);
         enemy = new Enemy(this);
-    }
-    public TextureAtlas getAtlas(){
-        return atlas;
-    }
 
-
-    public void handleInput(float dt){
-
-        player.handleInput(dt);
-    }
-
-    public Viewport getPort(){
-        return gamePort;
+        drawQueue.add(player, 0);
     }
 
     public void update (float dt){
@@ -110,6 +99,11 @@ public class PlatScreen implements Screen {
         renderer.setView(gamecam);
 
 
+    }
+
+    public void handleInput(float dt){
+
+        player.handleInput(dt);
     }
 
     @Override
@@ -129,22 +123,10 @@ public class PlatScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         drawQueue.draw(game.batch);
-        player.draw(game.batch);
-
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        gamePort.update(width, height);
-    }
-
-    public SpriteBatch getBatch(){
-        return game.batch;
-
     }
 
 
@@ -156,6 +138,11 @@ public class PlatScreen implements Screen {
     @Override
     public void resume() {
 
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        gamePort.update(width, height);
     }
 
     @Override
@@ -182,6 +169,19 @@ public class PlatScreen implements Screen {
 
     public TiledMap getMap() {
         return map;
+    }
+
+    public TextureAtlas getAtlas(){
+        return atlas;
+    }
+
+    public SpriteBatch getBatch(){
+        return game.batch;
+
+    }
+
+    public Viewport getPort(){
+        return gamePort;
     }
 
 }
