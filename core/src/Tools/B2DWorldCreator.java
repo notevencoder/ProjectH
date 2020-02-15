@@ -8,20 +8,21 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Platformer;
+import com.mygdx.game.Screens.PlatScreen;
 
 import java.awt.*;
 
 public class B2DWorldCreator {
-    World world;
-    TiledMap map;
-    Body body;
-    BodyDef bdef;
-    FixtureDef fdef;
-    PolygonShape shape;
+   private World world;
+   private TiledMap map;
+   private Body body;
+   private BodyDef bdef;
+   private FixtureDef fdef;
+   private PolygonShape shape;
 
-    public B2DWorldCreator(World world, TiledMap map){
-        this.map = map;
-        this.world = world;
+    public B2DWorldCreator(PlatScreen screen){
+        this.map = screen.getMap();
+        this.world = screen.getWorld();
         bdef = new BodyDef();
         shape = new PolygonShape();
         fdef = new FixtureDef();
@@ -45,12 +46,11 @@ public class B2DWorldCreator {
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            new Door(world, map, rect);
+            new Door(screen, rect);
         }
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new Platforms(world, map, rect);
+            new Platforms(screen, rect);
         }
 
     }
