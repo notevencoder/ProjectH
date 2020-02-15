@@ -59,6 +59,7 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
     @Override
     public void Interact(Player player) {
         Entering = true;
+
         curState = State.OPEN;
         interector = player;
         player.Interact(this);

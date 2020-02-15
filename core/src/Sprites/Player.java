@@ -23,7 +23,7 @@ public class Player extends Sprite implements Drawable {
     public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
-    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING,ENTER_THE_DOOR}
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR}
 
     private Screen screen;
     private State currentState;
@@ -55,7 +55,7 @@ public class Player extends Sprite implements Drawable {
         setBounds(0, 0, 78 / Platformer.PPM, 58 / Platformer.PPM);
     }
 
-    public static void setCanInteractWithNow(InteractiveObjects objects){
+    public static void setCanInteractWithNow(InteractiveObjects objects) {
         canInteractWith = (InteractiveObjects) objects;
     }
 
@@ -69,34 +69,40 @@ public class Player extends Sprite implements Drawable {
 
     }
 
-    public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects){
+    public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects) {
         return canInteractWith;
     }
 
     public void handleInput(float dt) {
         if (!entering) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && canInteractWith != null) {
-                canInteractWith.Interact(this);
-            }
-            if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f)
+            if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f) {
                 attacking = false;
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 attacking = true;
+            }
 
             if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
                 //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
-            )
+            ) {
                 b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
                 b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
-            else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
                 b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
-            else
+            } else {
                 b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && canInteractWith != null) {
+                canInteractWith.Interact(this);
+                b2body.setLinearVelocity(0, 0);
+            }
         }
     }
+
     @Override
-    public void drawMe(SpriteBatch batch){
+    public void drawMe(SpriteBatch batch) {
         draw(batch);
     }
 
@@ -149,25 +155,26 @@ public class Player extends Sprite implements Drawable {
     }
 
     public State getState(float dt) {
-        if (!entering){
+        if (!entering) {
             previousState = currentState;
             if (attacking) return State.ATTACKING;
             if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
             if (b2body.getLinearVelocity().y < 0) return State.FALLING;
             if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
             return State.STANDING;
-        } else{
-            if (((Door)interactingWithNow).getCurrentAnimation().isAnimationFinished(((Door)interactingWithNow).getStateTimer())){
-                  return State.ENTER_THE_DOOR;
+        } else {
+            if (((Door) interactingWithNow).getCurrentAnimation().isAnimationFinished(((Door) interactingWithNow).getStateTimer())) {
+                return State.ENTER_THE_DOOR;
             } else return State.STANDING;
         }
     }
-    public static void  Interact(InteractiveObjects object){
+
+    public static void Interact(InteractiveObjects object) {
         entering = true;
         interactingWithNow = object;
     }
 
-    public void onEnter(){
+    public void onEnter() {
         world.destroyBody(b2body);
         PlatScreen.drawQueue.remove(this);
     }
