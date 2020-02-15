@@ -1,7 +1,9 @@
 package com.mygdx.game.Screens;
 
+import Sprites.Enemy;
 import Sprites.Player;
 import Tools.B2DWorldCreator;
+import Tools.DrawQueue;
 import Tools.UpdateQueue;
 import Tools.WorldContactListener;
 import Tools.WorldStateListener;
@@ -45,13 +47,15 @@ public class PlatScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private Player player;
+    Enemy enemy;
 
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;
+    public static DrawQueue drawQueue;
     public PlatScreen(Platformer GAME){
         atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
-        //new Player(world);
+
         hud = new Hud(game.batch);
 
         gamecam = new OrthographicCamera();
@@ -63,18 +67,20 @@ public class PlatScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map,1 / Platformer.PPM);
 
         updateQueue = new UpdateQueue();
+        drawQueue = new DrawQueue();
 
         // устанавливаем камеру
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         // инициализация world
         world = new World(new Vector2(0,-10 ),true);
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(new WorldContactListener(this));
         b2dr = new Box2DDebugRenderer();
 
         new B2DWorldCreator( this);
 
-        player = new Player(world, this);
+        player = new Player(this);
+        enemy = new Enemy(this);
     }
     public TextureAtlas getAtlas(){
         return atlas;
@@ -82,6 +88,7 @@ public class PlatScreen implements Screen {
 
 
     public void handleInput(float dt){
+
         player.handleInput(dt);
     }
 
@@ -94,6 +101,7 @@ public class PlatScreen implements Screen {
 
         world.step(1/60f,6,2);
         updateQueue.update(dt);
+        enemy.update(dt);
         player.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
@@ -120,8 +128,7 @@ public class PlatScreen implements Screen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-
-        updateQueue.Draw(game.batch);
+        drawQueue.draw(game.batch);
         player.draw(game.batch);
 
         game.batch.end();
@@ -130,23 +137,13 @@ public class PlatScreen implements Screen {
         hud.stage.draw();
     }
 
-
-
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
     }
 
-    public static SpriteBatch getBatch(){
+    public SpriteBatch getBatch(){
         return game.batch;
-
-    }
-    public static TiledMap getMap(){
-        return map;
-
-    }
-    public static World getWorld(){
-        return world;
 
     }
 
@@ -177,5 +174,13 @@ public class PlatScreen implements Screen {
 
     public static Player getPlayer(){
         return player;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public TiledMap getMap() {
+        return map;
     }
 }

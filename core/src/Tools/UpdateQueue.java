@@ -17,14 +17,7 @@ public class UpdateQueue {
     public void addForever(Updatable obj){
         arrForever.add(obj);
     }
-    public void addToDrawable(Sprite door){
-        drawable.add(door);
-    }
 
-    public void Draw(SpriteBatch batch){
-        for (Sprite i : drawable)
-            i.draw(batch);
-    }
 
     public void update(float dt){
         for (Updatable i : arr)

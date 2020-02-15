@@ -38,8 +38,10 @@ public class Player extends Sprite {
     private static InteractiveObjects canInteractWith = null;
     private static InteractiveObjects interactingWithNow = null;
 
-    public Player(World world, PlatScreen screen) {
+    public Player(PlatScreen screen) {
         //super(screen.getAtlas().findRegion("Run (78x58)"));
+
+        this.world = screen.getWorld();
         entering = false;
         this.world = world;
 
@@ -173,12 +175,11 @@ public class Player extends Sprite {
         PolygonShape shape = new PolygonShape();
 
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
-
+        fdef.shape = shape;
 
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
         fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT;
 
-        fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape hitBox = new EdgeShape();
@@ -195,10 +196,10 @@ public class Player extends Sprite {
         hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
         fdef.shape = hitBox;
         b2body.createFixture(fdef).setUserData("Left");
-        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(20 / Platformer.PPM, 0), 0);
+        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(30 / Platformer.PPM, 0), 0);
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("AttackRight");
-        shape.setAsBox(10 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-20 / Platformer.PPM, 0), 0);
+        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-30 / Platformer.PPM, 0), 0);
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("AttackLeft");
     }
