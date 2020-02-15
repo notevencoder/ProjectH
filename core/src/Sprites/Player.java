@@ -39,7 +39,6 @@ public class Player extends Sprite {
         defineAnimations(screen);
 
         setBounds(0, 0, 78 / Platformer.PPM, 58 / Platformer.PPM);
-
     }
 
     public void handleInput(float dt) {
@@ -115,6 +114,7 @@ public class Player extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
         //
         setRegion(getFrame(dt));
+
     }
 
 

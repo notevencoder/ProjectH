@@ -39,7 +39,7 @@ public class PlatScreen implements Screen {
     // объявляем world Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
-    public static Player player;
+    private Player player;
 
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;
@@ -114,6 +114,7 @@ public class PlatScreen implements Screen {
         b2dr.render(world, gamecam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+        updateQueue.Draw(game.batch);
         player.draw(game.batch);
 
         game.batch.end();
@@ -154,5 +155,9 @@ public class PlatScreen implements Screen {
         b2dr.dispose();
         world.dispose();
 
+    }
+
+    public Player getPlayer(){
+        return player;
     }
 }
