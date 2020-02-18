@@ -44,7 +44,7 @@ public class Door extends InteractiveObjects implements Updatable, Drawable {
         PlatScreen.updateQueue.addForever(this);
 
         PlatScreen.updateQueue.addForever(this);
-        PlatScreen.drawQueue.add(this, 2);
+        PlatScreen.drawQueue.add(this, 5);
         //setRegion((TextureRegion) openning.getKeyFrame(0, true));
         setRegion((TextureRegion) opening.getKeyFrame(0, true));
         setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM, 46 / Platformer.PPM, 56 / Platformer.PPM);

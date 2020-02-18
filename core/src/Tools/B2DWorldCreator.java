@@ -1,6 +1,8 @@
 package Tools;
 
 import Sprites.Door;
+import Sprites.Items.Diamond;
+import Sprites.Items.Heart;
 import Sprites.Platforms;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -9,8 +11,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
-
-import java.awt.*;
 
 public class B2DWorldCreator {
    private World world;
@@ -51,6 +51,15 @@ public class B2DWorldCreator {
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             new Platforms(screen, rect);
+        }
+
+        for (MapObject object : map.getLayers().get("Hearts").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new Heart(screen, rect);
+        }
+        for (MapObject object : map.getLayers().get("Diamonds").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            new Diamond(screen, rect);
         }
 
     }

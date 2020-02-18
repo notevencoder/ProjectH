@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
-import org.graalvm.compiler.replacements.aarch64.PluginFactory_AArch64FloatArithmeticSnippets;
 
 public class Player extends Sprite implements Drawable {
     public World world;
@@ -197,7 +196,7 @@ public class Player extends Sprite implements Drawable {
         fdef.shape = shape;
 
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
-        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT;
+        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT | Platformer.ITEM_BIT;
 
         b2body.createFixture(fdef).setUserData(this);
 

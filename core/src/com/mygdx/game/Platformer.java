@@ -16,6 +16,7 @@ public class Platformer extends Game {
 	public final static short PLATFORM_BIT = 4;
 	public final static short DOOR_BIT = 8;
 	public final static short ENEMY_BIT = 16;
+	public final static short ITEM_BIT = 32;
 
 
 
