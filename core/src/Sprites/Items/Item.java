@@ -40,6 +40,7 @@ public abstract class Item extends Sprite implements Updatable, Drawable {
         draw(batch);
     }
 
+    //Вызывается при уничтожении
     public void destroy() {
         world.destroyBody(body);
         PlatScreen.drawQueue.remove(this);
@@ -52,6 +53,7 @@ public abstract class Item extends Sprite implements Updatable, Drawable {
         fixture.setFilterData(filter);
     }
 
+    //Создаем тело предмета
     private void defineItem(){
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -68,6 +70,7 @@ public abstract class Item extends Sprite implements Updatable, Drawable {
         fixture = body.createFixture(fdef);
     }
 
+    //Вызывается при взятии
     public abstract void onTake();
 
 }

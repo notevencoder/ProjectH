@@ -29,6 +29,7 @@ public class Diamond extends Item {
         setBounds(bounds.x / Platformer.PPM, bounds.y / Platformer.PPM, bounds.width / Platformer.PPM, bounds.height / Platformer.PPM);
     }
 
+    //Вызывается при взятии
     @Override
     public void onTake() {
         stateTimer = 0;
