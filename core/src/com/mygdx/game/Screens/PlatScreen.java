@@ -56,7 +56,7 @@ public class PlatScreen implements Screen {
         atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
 
-        hud = new Hud(game.batch);
+        hud = new Hud(this);
 
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(Platformer.V_WIDTH  / Platformer.PPM, Platformer.V_HEIGHT  / Platformer.PPM,  gamecam);

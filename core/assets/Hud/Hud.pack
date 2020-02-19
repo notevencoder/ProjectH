@@ -1,0 +1,26 @@
+
+Hud.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Small Heart Idle (18x14)
+  rotate: false
+  xy: 1, 37
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+Live Bar
+  rotate: false
+  xy: 1, 1
+  size: 66, 34
+  orig: 66, 34
+  offset: 0, 0
+  index: -1
+Small Heart Hit (18x14)
+  rotate: false
+  xy: 147, 37
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
