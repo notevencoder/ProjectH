@@ -49,7 +49,7 @@ public class Player extends Sprite implements Drawable {
         this.world = screen.getWorld();
         this.world = world;
         entering = false;
-        lives = 0;
+        lives = 3;
 
         definePlayer();
         defineAnimations(screen);
@@ -107,7 +107,14 @@ public class Player extends Sprite implements Drawable {
         }
             return false;
     }
-
+    public boolean takeDamage(){
+        if (lives > 0){
+            lives--;
+            stateTimer = 0;
+            return true;
+        }
+        return false;
+    }
 
     public static void Interact(InteractiveObjects object) {
         entering = true;

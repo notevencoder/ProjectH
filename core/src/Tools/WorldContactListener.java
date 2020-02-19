@@ -64,8 +64,7 @@ public class WorldContactListener implements ContactListener {
                     object = fixtureA;
                 } else
                     break;
-                if (((Player) player.getUserData()).addLives())
-                    ((Item) object.getUserData()).onTake();
+                ((Item) object.getUserData()).onTake();
                 break;
             case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {
                 if (fixtureB.getUserData().getClass() == Player.class) {

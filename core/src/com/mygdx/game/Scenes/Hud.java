@@ -55,10 +55,11 @@ public class Hud implements Disposable {
     private class LiveBar extends Actor implements Updatable {
 
         private TextureAtlas atlas;
-        private TextureRegion hudTexture, heartTexture;
+        private TextureRegion hudTexture, heartTexture, heartDamagedTexture;
         private float padX, padY;
         private float stateTimer;
         private float lives;
+        private boolean damaged = false;
 
 
         public static final float scale = 2;
@@ -66,30 +67,15 @@ public class Hud implements Disposable {
         Animation animationIdle, animationHit;
 
 
-
         public LiveBar() {
-//            heart1pos = new Vector2(/*getPosition().x + 18 * scale, getPosition().y + 13 * scale*/ 100, 10);
-//            heart2pos = new Vector2(heart1pos.x + 3 * scale, heart1pos.y);
-//            heart3pos = new Vector2(heart2pos.x + 3 * scale, heart2pos.y);
             PlatScreen.updateQueue.addForever(this);
-            Actor[] actors = new Actor[3];
-            for (Actor i : actors) {
-                i = new Actor();
-            }
-
 
             setSize(scale * 66, scale * 34);
             setPad(15, 15);
             setPosition(0, Platformer.V_HEIGHT - getHeight());
 
             defineAnimations();
-            heartTexture = (TextureRegion) animationIdle.getKeyFrame(0);
-
-
         }
-
-
-
 
         public void setPad(float x, float y) {
             padX = x;
@@ -100,19 +86,35 @@ public class Hud implements Disposable {
         @Override
         public void draw(Batch batch, float parentAlpha) {
             batch.draw(hudTexture, getX() + padX, getY() - padY, getWidth(), getHeight());
-            for (int i = 0; i < lives; i++){
+            for (int i = 0; i < lives; i++) {
                 batch.draw(heartTexture,
-                         getX() + padX + scale*(11 + i * (heartTexture.getRegionWidth() - 7)),getY() - padY + 11 * scale,
+                        getX() + padX + scale * (11 + i * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
                         heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
             }
+            if (damaged){
+                batch.draw(heartDamagedTexture,
+                        getX() + padX + scale * (11 + lives * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
+                        heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
+            }
+
         }
 
 
         @Override
         public void update(float dt) {
-            lives = screen.getPlayer().getLives();
-            heartTexture = (TextureRegion)animationIdle.getKeyFrame(stateTimer, true);
+            heartTexture = (TextureRegion) animationIdle.getKeyFrame(stateTimer, true);
             stateTimer += dt;
+            if (lives > screen.getPlayer().getLives()) {
+                damaged = true;
+                stateTimer = 0;
+            }
+            lives = screen.getPlayer().getLives();
+
+            if (damaged && animationHit.isAnimationFinished(stateTimer)){
+                damaged = false;
+            }
+            if (damaged)
+                heartDamagedTexture = (TextureRegion) animationHit.getKeyFrame(stateTimer);
         }
 
         private void defineAnimations() {

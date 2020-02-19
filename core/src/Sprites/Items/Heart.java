@@ -34,8 +34,10 @@ public class Heart extends Item {
     //Вызывается при взятии
     @Override
     public void onTake() {
-        stateTimer = 0;
-        curAnimation = hitAnimation;
+        if (screen.getPlayer().addLives()) {
+            stateTimer = 0;
+            curAnimation = hitAnimation;
+        }
     }
 
     @Override
