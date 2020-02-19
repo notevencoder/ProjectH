@@ -36,7 +36,6 @@ public class WorldContactListener implements ContactListener {
             Gdx.app.log("contact", "Right begin");
 
 
-
         int cDef = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 
         switch (cDef) {
@@ -60,23 +59,24 @@ public class WorldContactListener implements ContactListener {
                 if (fixtureA.getUserData().getClass() == Player.class) {
                     player = fixtureA;
                     object = fixtureB;
-                } else if (fixtureB.getUserData().getClass() == Player.class){
+                } else if (fixtureB.getUserData().getClass() == Player.class) {
                     player = fixtureB;
                     object = fixtureA;
-                }else
+                } else
                     break;
-                ((Item) object.getUserData()).onTake();
+                if (((Player) player.getUserData()).addLives())
+                    ((Item) object.getUserData()).onTake();
                 break;
-            case  Platformer.PLAYER_BIT | Platformer.DOOR_BIT:{
+            case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {
                 if (fixtureB.getUserData().getClass() == Player.class) {
                     object = fixtureA;
                     player = fixtureB;
-                } else if (fixtureA.getUserData().getClass() == Player.class){
+                } else if (fixtureA.getUserData().getClass() == Player.class) {
                     object = fixtureB;
                     player = fixtureA;
-                }else
+                } else
                     break;
-                ((Player)player.getUserData()).setCanInteractWithNow((InteractiveObjects) object.getUserData());
+                ((Player) player.getUserData()).setCanInteractWithNow((InteractiveObjects) object.getUserData());
 
                 break;
             }
@@ -103,7 +103,7 @@ public class WorldContactListener implements ContactListener {
                 player = fixtureA;
             }
 
-            PlatScreen.getPlayer().setCanInteractWithNow(null);
+            screen.getPlayer().setCanInteractWithNow(null);
         }
 
 

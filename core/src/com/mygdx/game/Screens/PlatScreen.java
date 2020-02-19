@@ -46,13 +46,17 @@ public class PlatScreen implements Screen {
     // объявляем world Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
-    private static Player player;
+    private Player player;
     Enemy enemy;
 
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;
     public static DrawQueue drawQueue;
     public PlatScreen(Platformer GAME){
+
+        updateQueue = new UpdateQueue();
+        drawQueue = new DrawQueue();
+
         atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
 
@@ -66,8 +70,6 @@ public class PlatScreen implements Screen {
         map = mapLoader.load("test3.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,1 / Platformer.PPM);
 
-        updateQueue = new UpdateQueue();
-        drawQueue = new DrawQueue();
 
         // устанавливаем камеру
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -159,7 +161,7 @@ public class PlatScreen implements Screen {
 
     }
 
-    public  static Player getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 
@@ -177,7 +179,6 @@ public class PlatScreen implements Screen {
 
     public SpriteBatch getBatch(){
         return game.batch;
-
     }
 
     public Viewport getPort(){

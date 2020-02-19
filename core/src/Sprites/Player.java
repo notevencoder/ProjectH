@@ -35,6 +35,8 @@ public class Player extends Sprite implements Drawable {
     public boolean attacking = false;
     private Animation currentAnimation;
 
+    private int lives;
+
     private static boolean entering;
 
 
@@ -45,17 +47,14 @@ public class Player extends Sprite implements Drawable {
         //super(screen.getAtlas().findRegion("Run (78x58)"));
         this.screen = screen;
         this.world = screen.getWorld();
-        entering = false;
         this.world = world;
+        entering = false;
+        lives = 0;
 
         definePlayer();
         defineAnimations(screen);
 
         setBounds(0, 0, 78 / Platformer.PPM, 58 / Platformer.PPM);
-    }
-
-    public static void setCanInteractWithNow(InteractiveObjects objects) {
-        canInteractWith = (InteractiveObjects) objects;
     }
 
     public void update(float dt) {
@@ -66,10 +65,6 @@ public class Player extends Sprite implements Drawable {
         //
         setRegion(getFrame(dt));
 
-    }
-
-    public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects) {
-        return canInteractWith;
     }
 
     public void handleInput(float dt) {
@@ -103,6 +98,33 @@ public class Player extends Sprite implements Drawable {
     @Override
     public void drawMe(SpriteBatch batch) {
         draw(batch);
+    }
+
+    public boolean addLives(){
+        if (lives < 3){
+            lives++;
+            return true;
+        }
+            return false;
+    }
+
+
+    public static void Interact(InteractiveObjects object) {
+        entering = true;
+        interactingWithNow = object;
+    }
+
+    public void onEnter() {
+        world.destroyBody(b2body);
+        PlatScreen.drawQueue.remove(this);
+    }
+
+    public static void setCanInteractWithNow(InteractiveObjects objects) {
+        canInteractWith = (InteractiveObjects) objects;
+    }
+
+    public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects) {
+        return canInteractWith;
     }
 
     public TextureRegion getFrame(float dt) {
@@ -168,16 +190,18 @@ public class Player extends Sprite implements Drawable {
         }
     }
 
-    public static void Interact(InteractiveObjects object) {
-        entering = true;
-        interactingWithNow = object;
+
+    public Animation getCurrentAnimation() {
+        return currentAnimation;
     }
 
-    public void onEnter() {
-        world.destroyBody(b2body);
-        PlatScreen.drawQueue.remove(this);
+    public float getStateTimer() {
+        return stateTimer;
     }
 
+    public int getLives(){
+        return lives;
+    }
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
@@ -279,11 +303,5 @@ public class Player extends Sprite implements Drawable {
 
     }
 
-    public Animation getCurrentAnimation() {
-        return currentAnimation;
-    }
 
-    public float getStateTimer() {
-        return stateTimer;
-    }
 }
