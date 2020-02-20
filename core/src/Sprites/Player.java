@@ -67,8 +67,11 @@ public class Player extends Sprite implements Drawable {
 
     }
 
+
+
     public void handleInput(float dt) {
         if (!entering) {
+            b2body.setAwake(true);
             if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f) {
                 attacking = false;
             }

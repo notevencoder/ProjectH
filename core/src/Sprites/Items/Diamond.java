@@ -34,6 +34,7 @@ public class Diamond extends Item {
     public void onTake() {
         stateTimer = 0;
         curAnimation = hitAnimation;
+        screen.getHud().increaseScore();
     }
 
     @Override

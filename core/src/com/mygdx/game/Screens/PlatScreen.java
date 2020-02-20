@@ -131,6 +131,10 @@ public class PlatScreen implements Screen {
         hud.stage.draw();
     }
 
+    public Hud getHud(){
+        return hud;
+
+    }
 
     @Override
     public void pause() {

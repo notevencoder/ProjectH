@@ -32,6 +32,7 @@ public class Platforms extends InteractiveObjects implements Updatable {
     @Override
     public void update(float dt){
         if (screen.getPlayer().b2body.getPosition().y - screen.getPlayer().HEIGHT / 2 < this.body.getPosition().y || Gdx.input.isKeyPressed(Input.Keys.DOWN))
+
             fixture.setSensor(true);
         else
             fixture.setSensor(false);

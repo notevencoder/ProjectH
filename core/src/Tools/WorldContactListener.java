@@ -3,6 +3,7 @@ package Tools;
 import Sprites.Door;
 import Sprites.InteractiveObjects;
 import Sprites.Enemy;
+import Sprites.Items.Diamond;
 import Sprites.Items.Heart;
 import Sprites.Items.Item;
 import Sprites.Player;
@@ -64,6 +65,7 @@ public class WorldContactListener implements ContactListener {
                     object = fixtureA;
                 } else
                     break;
+
                 ((Item) object.getUserData()).onTake();
                 break;
             case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {

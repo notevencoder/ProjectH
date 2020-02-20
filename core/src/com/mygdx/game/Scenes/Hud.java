@@ -23,7 +23,7 @@ public class Hud implements Disposable {
 
     private Integer worldTimer;
     private float timeCount;
-    private Integer score;
+    protected Integer score;
     private PlatScreen screen;
 
     private LiveBar liveBar;
@@ -148,6 +148,9 @@ public class Hud implements Disposable {
             frames.clear();
         }
     }
+    public void increaseScore(){
+        score++;
+    }
 
 
     protected class DiamondBar extends  Actor implements Updatable{
@@ -160,11 +163,10 @@ public class Hud implements Disposable {
         private TextureRegion IdleRegion;
 
         private Array<TextureRegion> numbers = new Array<TextureRegion>();
-        private int score;
 
 
         public DiamondBar(LiveBar bar){
-            score = 120;
+
             this.bar = bar;
             screen.updateQueue.addForever(this);
 
@@ -225,11 +227,11 @@ public class Hud implements Disposable {
                 }
 
                 for (i = 0 ; i < length; i++){
-                    batch.draw(numbers.get(mas[i]),getX() + getWidth() + i * 6 * bar.scale,getY() ,6 * bar.scale ,8 * bar.scale);
+                    batch.draw(numbers.get(mas[i]),getX() + getWidth() + i * 6 * bar.scale,getY() + getHeight() / 4,6 * bar.scale ,8 * bar.scale);
 
                 }
             }else {
-                batch.draw(numbers.get(0),getX() + getWidth(),getY() ,6 * bar.scale ,8 * bar.scale);
+                batch.draw(numbers.get(0),getX() + getWidth(),getY() + getHeight() / 4 ,6 * bar.scale ,8 * bar.scale);
             }
 
         }
