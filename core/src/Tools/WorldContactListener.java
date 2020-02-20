@@ -75,6 +75,7 @@ public class WorldContactListener implements ContactListener {
                     player = fixtureA;
                 } else
                     break;
+
                 ((Player) player.getUserData()).setCanInteractWithNow((InteractiveObjects) object.getUserData());
 
                 break;

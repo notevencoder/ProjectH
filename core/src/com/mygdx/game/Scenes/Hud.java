@@ -3,11 +3,13 @@ package com.mygdx.game.Scenes;
 import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -25,10 +27,13 @@ public class Hud implements Disposable {
     private PlatScreen screen;
 
     private LiveBar liveBar;
+    private DiamondBar diamondBar;
 
     public Hud(PlatScreen screen) {
         this.screen = screen;
+
         SpriteBatch sb = screen.getBatch();
+
         worldTimer = 300;
         timeCount = 0;
         score = 0;
@@ -40,7 +45,11 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
         liveBar = new LiveBar();
+        diamondBar = new DiamondBar(liveBar);
         stage.addActor(liveBar);
+        stage.addActor(diamondBar);
+        stage.setDebugAll(true);
+
 
 
     }
@@ -52,7 +61,7 @@ public class Hud implements Disposable {
     }
 
 
-    private class LiveBar extends Actor implements Updatable {
+    protected class LiveBar extends Actor implements Updatable {
 
         private TextureAtlas atlas;
         private TextureRegion hudTexture, heartTexture, heartDamagedTexture;
@@ -62,7 +71,7 @@ public class Hud implements Disposable {
         private boolean damaged = false;
 
 
-        public static final float scale = 2;
+        public static final float scale = 2 ;
 
         Animation animationIdle, animationHit;
 
@@ -72,7 +81,7 @@ public class Hud implements Disposable {
 
             setSize(scale * 66, scale * 34);
             setPad(15, 15);
-            setPosition(0, Platformer.V_HEIGHT - getHeight());
+            setPosition(0 + padX, Platformer.V_HEIGHT - getHeight()- padY);
 
             defineAnimations();
         }
@@ -85,15 +94,15 @@ public class Hud implements Disposable {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            batch.draw(hudTexture, getX() + padX, getY() - padY, getWidth(), getHeight());
+            batch.draw(hudTexture, getX() , getY() , getWidth(), getHeight());
             for (int i = 0; i < lives; i++) {
                 batch.draw(heartTexture,
-                        getX() + padX + scale * (11 + i * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
+                        getX()  + scale * (11 + i * (heartTexture.getRegionWidth() - 7)) , getY() + 11 * scale - 1 * scale,
                         heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
             }
             if (damaged){
                 batch.draw(heartDamagedTexture,
-                        getX() + padX + scale * (11 + lives * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
+                        getX()  + scale * (11 + lives * (heartTexture.getRegionWidth() - 7)), getY()  + 11 * scale,
                         heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
             }
 
@@ -137,6 +146,110 @@ public class Hud implements Disposable {
             animationHit = new Animation(0.1f, frames);
 
             frames.clear();
+        }
+    }
+
+
+    protected class DiamondBar extends  Actor implements Updatable{
+
+        private LiveBar bar;
+        private TextureAtlas atlas;
+        private float stateTimer;
+        private Animation animDiamond;
+        private float padY = 1 ;
+        private TextureRegion IdleRegion;
+
+        private Array<TextureRegion> numbers = new Array<TextureRegion>();
+        private int score;
+
+
+        public DiamondBar(LiveBar bar){
+            score = 120;
+            this.bar = bar;
+            screen.updateQueue.addForever(this);
+
+            setSize(18 * bar.scale,14 * bar.scale);
+            setPosition(bar.getX() + bar.getWidth() / 4, bar.getY() - getHeight());
+
+            defineAnimations();
+        }
+
+        public void defineAnimations(){
+
+            atlas = new TextureAtlas("Hud/Hud.pack");
+            stateTimer = 0;
+
+            TextureRegion region = new TextureRegion(atlas.findRegion("Small Diamond (18x14)"));
+            Array<TextureRegion> frames = new Array<TextureRegion>();
+
+            for (int i = 0; i < 8; i++)
+                frames.add(new TextureRegion(region, i*18,0,18,14));
+
+            animDiamond = new Animation(0.1f, frames);
+
+            frames.clear();
+
+            region = new TextureRegion(atlas.findRegion("Numbers (6x8)"));
+
+            numbers.add(new TextureRegion(region,54,0,6,8));
+            for (int i = 1; i < 10; i++)
+                numbers.add(new TextureRegion(region,(i-1)*6,0,6,8));
+
+
+
+
+
+        }
+
+
+
+
+
+
+        public void drawScore(int score, Batch batch){
+            int buff = score, length = 0;
+            if (score != 0){
+                while (buff > 0){
+                    length++;
+                    buff /= 10;
+                }
+
+
+                int[] mas = new int[length];
+                int i = length -1;
+                while(score > 0) {
+                    mas[i] = score % 10;
+                    score/=10;
+                    i--;
+
+                }
+
+                for (i = 0 ; i < length; i++){
+                    batch.draw(numbers.get(mas[i]),getX() + getWidth() + i * 6 * bar.scale,getY() ,6 * bar.scale ,8 * bar.scale);
+
+                }
+            }else {
+                batch.draw(numbers.get(0),getX() + getWidth(),getY() ,6 * bar.scale ,8 * bar.scale);
+            }
+
+        }
+
+        @Override
+        public void update(float dt) {
+            IdleRegion = (TextureRegion) animDiamond.getKeyFrame(stateTimer, true);
+
+            stateTimer += dt;
+
+
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha){
+            batch.draw(IdleRegion, getX() , getY() , getWidth(),  getHeight());
+
+
+            drawScore(score, batch);
+
         }
     }
 }

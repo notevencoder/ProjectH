@@ -3,23 +3,37 @@ Hud.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Small Diamond (18x14)
+  rotate: false
+  xy: 1, 27
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
 Small Heart Idle (18x14)
   rotate: false
-  xy: 1, 37
+  xy: 1, 11
   size: 144, 14
   orig: 144, 14
   offset: 0, 0
   index: -1
 Live Bar
   rotate: false
-  xy: 1, 1
+  xy: 147, 7
   size: 66, 34
   orig: 66, 34
   offset: 0, 0
   index: -1
+Numbers (6x8)
+  rotate: false
+  xy: 1, 1
+  size: 60, 8
+  orig: 60, 8
+  offset: 0, 0
+  index: -1
 Small Heart Hit (18x14)
   rotate: false
-  xy: 147, 37
+  xy: 215, 27
   size: 36, 14
   orig: 36, 14
   offset: 0, 0

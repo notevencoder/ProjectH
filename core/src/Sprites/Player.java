@@ -49,7 +49,7 @@ public class Player extends Sprite implements Drawable {
         this.world = screen.getWorld();
         this.world = world;
         entering = false;
-        lives = 3;
+        lives = 0;
 
         definePlayer();
         defineAnimations(screen);
