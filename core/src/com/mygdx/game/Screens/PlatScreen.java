@@ -10,6 +10,7 @@ import Tools.WorldStateListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -42,6 +43,7 @@ public class PlatScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private AssetManager manager;
 
     // объявляем world Box2d
     private World world;
@@ -52,13 +54,16 @@ public class PlatScreen implements Screen {
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;
     public static DrawQueue drawQueue;
-    public PlatScreen(Platformer GAME){
+
+
+    public PlatScreen(Platformer GAME, AssetManager manager){
 
         updateQueue = new UpdateQueue();
         drawQueue = new DrawQueue();
 
         atlas = new TextureAtlas("KingAtlas/King.atlas");
         this.game = GAME;
+        this.manager = manager;
 
         hud = new Hud(this);
 
@@ -120,7 +125,7 @@ public class PlatScreen implements Screen {
 
         update(delta);
         renderer.render();
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -131,6 +136,9 @@ public class PlatScreen implements Screen {
         hud.stage.draw();
     }
 
+    public AssetManager getManager(){
+        return manager;
+    }
     public Hud getHud(){
         return hud;
 
