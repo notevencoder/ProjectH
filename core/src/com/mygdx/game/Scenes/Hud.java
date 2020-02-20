@@ -73,7 +73,7 @@ public class Hud implements Disposable {
         private Rectangle[] hearts;
 
 
-        public static final float scale = 2 ;
+        public static final float scale = 1.5f ;
 
         Animation animationIdle, animationHit;
 
@@ -83,7 +83,7 @@ public class Hud implements Disposable {
 
 
             setSize(scale * 66, scale * 34);
-            setPad(15, 15);
+            setPad(10, 10);
             setPosition(0 + padX, Platformer.V_HEIGHT - getHeight()- padY);
 
             defineAnimations();
@@ -92,8 +92,8 @@ public class Hud implements Disposable {
             hearts = new Rectangle[3];
             for (int i = 0; i < hearts.length; i++) {
                 hearts[i] = new Rectangle();
-                hearts[i].x = getX() + padX + scale * (11 + i * (heartTexture.getRegionWidth() - 7));
-                hearts[i].y = getY() - padY + 11 * scale;
+                hearts[i].x = getX()  + scale * (i+1)*(11 + lives * (heartTexture.getRegionWidth() - 7));
+                hearts[i].y = getY()  + 11 * scale;
                 hearts[i].width = heartTexture.getRegionWidth() * scale;
                 hearts[i].height = heartTexture.getRegionHeight() * scale;
             }
@@ -109,18 +109,11 @@ public class Hud implements Disposable {
         public void draw(Batch batch, float parentAlpha) {
             batch.draw(hudTexture, getX() , getY() , getWidth(), getHeight());
             for (int i = 0; i < lives; i++) {
-                batch.draw(heartTexture,
-                        getX()  + scale * (11 + i * (heartTexture.getRegionWidth() - 7)) , getY() + 11 * scale - 1 * scale,
-                        heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
+                batch.draw(heartTexture, hearts[i].x, hearts[i].y-1, hearts[i].width, hearts[i].height);
             }
-            if (damaged){
-                batch.draw(heartDamagedTexture,
-                        getX()  + scale * (11 + lives * (heartTexture.getRegionWidth() - 7)), getY()  + 11 * scale,
-                        heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
-            }
-            batch.draw(hudTexture, getX() + padX, getY() - padY, getWidth(), getHeight());
-            for (Rectangle i : hearts)
-                batch.draw(heartTexture, i.x, i.y, i.width, i.height);
+
+
+
 
             if (damaged)
                 batch.draw(heartDamagedTexture, hearts[lives].x, hearts[lives].y, hearts[lives].width, hearts[lives].height);
