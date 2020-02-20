@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Screens.PlatScreen;
 
@@ -19,11 +21,15 @@ public class Platformer extends Game {
 	public final static short ITEM_BIT = 32;
 
 
+	public AssetManager manager;
 
 	@Override
 	public void create () {
 		 batch = new SpriteBatch();
-		 setScreen(new PlatScreen(this));
+		manager = new AssetManager();
+		manager.load("Audio/Sounds/jump.ogg", Sound.class);
+		manager.finishLoading();
+		setScreen(new PlatScreen(this, manager));
 	}
 
 	@Override
@@ -36,4 +42,5 @@ public class Platformer extends Game {
 
 		batch.dispose();
 	}
+
 }

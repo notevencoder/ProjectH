@@ -4,6 +4,7 @@ import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -58,11 +59,12 @@ public class Hud implements Disposable {
         private TextureRegion hudTexture, heartTexture, heartDamagedTexture;
         private float padX, padY;
         private float stateTimer;
-        private float lives;
+        private int lives;
         private boolean damaged = false;
+        private Rectangle[] hearts;
 
 
-        public static final float scale = 2;
+        private final float scale = 2;
 
         Animation animationIdle, animationHit;
 
@@ -70,11 +72,22 @@ public class Hud implements Disposable {
         public LiveBar() {
             PlatScreen.updateQueue.addForever(this);
 
+
             setSize(scale * 66, scale * 34);
             setPad(15, 15);
             setPosition(0, Platformer.V_HEIGHT - getHeight());
 
             defineAnimations();
+            heartTexture = (TextureRegion) animationIdle.getKeyFrame(0);
+
+            hearts = new Rectangle[3];
+            for (int i = 0; i < hearts.length; i++) {
+                hearts[i] = new Rectangle();
+                hearts[i].x = getX() + padX + scale * (11 + i * (heartTexture.getRegionWidth() - 7));
+                hearts[i].y = getY() - padY + 11 * scale;
+                hearts[i].width = heartTexture.getRegionWidth() * scale;
+                hearts[i].height = heartTexture.getRegionHeight() * scale;
+            }
         }
 
         public void setPad(float x, float y) {
@@ -86,16 +99,12 @@ public class Hud implements Disposable {
         @Override
         public void draw(Batch batch, float parentAlpha) {
             batch.draw(hudTexture, getX() + padX, getY() - padY, getWidth(), getHeight());
-            for (int i = 0; i < lives; i++) {
-                batch.draw(heartTexture,
-                        getX() + padX + scale * (11 + i * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
-                        heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
-            }
-            if (damaged){
-                batch.draw(heartDamagedTexture,
-                        getX() + padX + scale * (11 + lives * (heartTexture.getRegionWidth() - 7)), getY() - padY + 11 * scale,
-                        heartTexture.getRegionWidth() * scale, heartTexture.getRegionHeight() * scale);
-            }
+            for (Rectangle i : hearts)
+                batch.draw(heartTexture, i.x, i.y, i.width, i.height);
+
+            if (damaged)
+                batch.draw(heartDamagedTexture, hearts[lives].x, hearts[lives].y, hearts[lives].width, hearts[lives].height);
+
 
         }
 
@@ -110,7 +119,7 @@ public class Hud implements Disposable {
             }
             lives = screen.getPlayer().getLives();
 
-            if (damaged && animationHit.isAnimationFinished(stateTimer)){
+            if (damaged && animationHit.isAnimationFinished(stateTimer)) {
                 damaged = false;
             }
             if (damaged)

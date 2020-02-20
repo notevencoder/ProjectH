@@ -4,6 +4,7 @@ import Tools.Drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,7 +25,7 @@ public class Player extends Sprite implements Drawable {
     // объявляем переменные для Анимации
     public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR}
 
-    private Screen screen;
+    private PlatScreen screen;
     private State currentState;
     private State previousState;
     private Animation animationIdle, animationRun, animationFall, animationJump, animationGround,
@@ -33,6 +34,7 @@ public class Player extends Sprite implements Drawable {
     public boolean runningRight;
     public boolean stepped = false;
     public boolean attacking = false;
+    private Sound jumpSound;
     private Animation currentAnimation;
 
     private int lives;
@@ -48,6 +50,7 @@ public class Player extends Sprite implements Drawable {
         this.screen = screen;
         this.world = screen.getWorld();
         this.world = world;
+        jumpSound = screen.getManager().get("Audio/Sounds/jump.ogg", Sound.class);
         entering = false;
         lives = 3;
 
@@ -62,7 +65,7 @@ public class Player extends Sprite implements Drawable {
             setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
         else
             setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
-        //
+
         setRegion(getFrame(dt));
 
     }
@@ -79,7 +82,7 @@ public class Player extends Sprite implements Drawable {
             if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
                 //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
             ) {
-                b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
+                jump();
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
                 b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
@@ -98,6 +101,10 @@ public class Player extends Sprite implements Drawable {
     @Override
     public void drawMe(SpriteBatch batch) {
         draw(batch);
+    }
+    public void jump(){
+        b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
+        jumpSound.play();
     }
 
     public boolean addLives(){
