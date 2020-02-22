@@ -1,7 +1,7 @@
 package Tools;
 
 import Sprites.Door;
-import Sprites.Enemys.Pig;
+import Sprites.Enemies.Pig;
 import Sprites.Items.Diamond;
 import Sprites.Items.Heart;
 import Sprites.Platforms;

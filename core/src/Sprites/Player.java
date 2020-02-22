@@ -244,6 +244,7 @@ public class Player extends Sprite implements Drawable {
         EdgeShape hitBox = new EdgeShape();
 
         fdef.shape = shape;
+        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(30 / Platformer.PPM, 0), 0);
         b2body.createFixture(fdef).setUserData("AttackRight");
         shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-30 / Platformer.PPM, 0), 0);
         fdef.shape = shape;
