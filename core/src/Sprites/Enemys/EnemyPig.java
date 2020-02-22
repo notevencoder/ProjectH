@@ -1,16 +1,15 @@
-package Sprites;
+package Sprites.Enemys;
 
 import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
-public class Enemy extends Sprite implements Updatable, Drawable {
+public class EnemyPig extends Sprite implements Updatable, Drawable {
     private World world;
     private TiledMap map;
     private PlatScreen screen;
@@ -23,7 +22,7 @@ public class Enemy extends Sprite implements Updatable, Drawable {
 
     Animation Idle;
 
-    public Enemy(PlatScreen screen) {
+    public EnemyPig(PlatScreen screen) {
         this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
@@ -77,6 +76,7 @@ public class Enemy extends Sprite implements Updatable, Drawable {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(8 / Platformer.PPM, 8 / Platformer.PPM);
         fdef.shape = shape;
+
         fdef.friction = 0;
         fdef.restitution = 0;
 

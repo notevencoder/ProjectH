@@ -1,35 +1,27 @@
 package com.mygdx.game.Screens;
 
-import Sprites.Enemy;
 import Sprites.Player;
 import Tools.B2DWorldCreator;
 import Tools.DrawQueue;
 import Tools.UpdateQueue;
 import Tools.WorldContactListener;
-import Tools.WorldStateListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Scenes.Hud;
-import sun.security.krb5.internal.SeqNumber;
 
 public class PlatScreen implements Screen {
 
@@ -49,7 +41,7 @@ public class PlatScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private Player player;
-    Enemy enemy;
+    //EnemyPig enemy;
 
     private TextureAtlas atlas;
     public static UpdateQueue updateQueue;
@@ -87,7 +79,7 @@ public class PlatScreen implements Screen {
         new B2DWorldCreator( this);
 
         player = new Player(this);
-        enemy = new Enemy(this);
+        //enemy = new EnemyPig(this);
 
         drawQueue.add(player, 0);
     }
@@ -97,7 +89,7 @@ public class PlatScreen implements Screen {
 
         world.step(1/60f,6,2);
         updateQueue.update(dt);
-        enemy.update(dt);
+       // enemy.update(dt);
         player.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;

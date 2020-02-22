@@ -62,9 +62,9 @@ public class Player extends Sprite implements Drawable {
 
     public void update(float dt) {
         if (runningRight)
-            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+            setPosition(b2body.getPosition().x - getWidth() / 2 + getWidth() / 10, b2body.getPosition().y - getHeight() / 2 + 3 / Platformer.PPM);
         else
-            setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2);
+            setPosition(b2body.getPosition().x - getWidth() / 2 - getWidth() / 10, b2body.getPosition().y - getHeight() / 2 + 3 / Platformer.PPM);
 
         setRegion(getFrame(dt));
 
@@ -107,7 +107,7 @@ public class Player extends Sprite implements Drawable {
     }
     public void jump(){
         b2body.applyLinearImpulse(new Vector2(0, 4), b2body.getWorldCenter(), true);
-        jumpSound.play();
+        //jumpSound.play();
     }
 
     public boolean addLives(){
@@ -229,33 +229,20 @@ public class Player extends Sprite implements Drawable {
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-//            CircleShape shape = new CircleShape();
-//            shape.setRadius(10 / Platformer.PPM);
         PolygonShape shape = new PolygonShape();
 
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
         fdef.shape = shape;
-
+        
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
         fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT | Platformer.ITEM_BIT;
 
         b2body.createFixture(fdef).setUserData(this);
 
-        EdgeShape hitBox = new EdgeShape();
         fdef.isSensor = true;
-        hitBox.set(new Vector2(2f / Platformer.PPM, 10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, 10 / Platformer.PPM));
-        fdef.shape = hitBox;
-        b2body.createFixture(fdef).setUserData("Head");
-        hitBox.set(new Vector2(2f / Platformer.PPM, -10 / Platformer.PPM), new Vector2(-2f / Platformer.PPM, -10 / Platformer.PPM));
-        fdef.shape = hitBox;
-        b2body.createFixture(fdef).setUserData("Legs");
-        hitBox.set(new Vector2(10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(10 / Platformer.PPM, 2f / Platformer.PPM));
-        fdef.shape = hitBox;
-        b2body.createFixture(fdef).setUserData("Right");
-        hitBox.set(new Vector2(-10 / Platformer.PPM, -2f / Platformer.PPM), new Vector2(-10 / Platformer.PPM, 2f / Platformer.PPM));
-        fdef.shape = hitBox;
-        b2body.createFixture(fdef).setUserData("Left");
-        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(30 / Platformer.PPM, 0), 0);
+
+        EdgeShape hitBox = new EdgeShape();
+
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("AttackRight");
         shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-30 / Platformer.PPM, 0), 0);

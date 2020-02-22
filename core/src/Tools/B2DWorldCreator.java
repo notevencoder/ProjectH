@@ -62,6 +62,7 @@ public class B2DWorldCreator {
             new Diamond(screen, rect);
         }
 
+
     }
 
 

@@ -1,10 +1,7 @@
 package Tools;
 
-import Sprites.Door;
 import Sprites.InteractiveObjects;
-import Sprites.Enemy;
-import Sprites.Items.Diamond;
-import Sprites.Items.Heart;
+import Sprites.Enemys.EnemyPig;
 import Sprites.Items.Item;
 import Sprites.Player;
 import com.badlogic.gdx.Gdx;
@@ -51,9 +48,9 @@ public class WorldContactListener implements ContactListener {
                     enemy = fixtureA;
                 }
                 if (player.getUserData() == "AttackRight")
-                    ((Enemy) enemy.getUserData()).destroyFromRight(true);
+                    ((EnemyPig) enemy.getUserData()).destroyFromRight(true);
                 else if (player.getUserData() == "AttackLeft")
-                    ((Enemy) enemy.getUserData()).destroyFromLeft(true);
+                    ((EnemyPig) enemy.getUserData()).destroyFromLeft(true);
 
                 break;
             case Platformer.PLAYER_BIT | Platformer.ITEM_BIT:
@@ -95,20 +92,6 @@ public class WorldContactListener implements ContactListener {
         Fixture object;
         Fixture player;
 
-        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class) {
-
-            if (fixtureA.getUserData().getClass() == Door.class) {
-                object = fixtureA;
-                player = fixtureB;
-            } else {
-                object = fixtureB;
-                player = fixtureA;
-            }
-
-            screen.getPlayer().setCanInteractWithNow(null);
-        }
-
-
         int cDef = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 
         switch (cDef) {
@@ -123,9 +106,24 @@ public class WorldContactListener implements ContactListener {
                     enemy = fixtureA;
                 }
                 if (player.getUserData() == "AttackRight")
-                    ((Enemy) enemy.getUserData()).destroyFromRight(false);
+                    ((EnemyPig) enemy.getUserData()).destroyFromRight(false);
                 else if (player.getUserData() == "AttackLeft")
-                    ((Enemy) enemy.getUserData()).destroyFromLeft(false);
+                    ((EnemyPig) enemy.getUserData()).destroyFromLeft(false);
+                break;
+
+            }
+            case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {
+                if (fixtureB.getUserData().getClass() == Player.class) {
+                    object = fixtureA;
+                    player = fixtureB;
+                } else if (fixtureA.getUserData().getClass() == Player.class) {
+                    object = fixtureB;
+                    player = fixtureA;
+                } else
+                    break;
+
+                ((Player) player.getUserData()).setCanInteractWithNow(null);
+
                 break;
             }
         }
