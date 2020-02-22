@@ -1,0 +1,61 @@
+
+Pig.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Idle (34x28)
+  rotate: false
+  xy: 1, 31
+  size: 374, 28
+  orig: 374, 28
+  offset: 0, 0
+  index: -1
+Run (34x28)
+  rotate: false
+  xy: 1, 1
+  size: 204, 28
+  orig: 204, 28
+  offset: 0, 0
+  index: -1
+Attack (34x28)
+  rotate: false
+  xy: 377, 31
+  size: 170, 28
+  orig: 170, 28
+  offset: 0, 0
+  index: -1
+Dead (34x28)
+  rotate: false
+  xy: 207, 1
+  size: 136, 28
+  orig: 136, 28
+  offset: 0, 0
+  index: -1
+Hit (34x28)
+  rotate: false
+  xy: 549, 31
+  size: 68, 28
+  orig: 68, 28
+  offset: 0, 0
+  index: -1
+Fall (34x28)
+  rotate: false
+  xy: 345, 1
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1
+Ground (34x28)
+  rotate: false
+  xy: 619, 31
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1
+Jump (34x28)
+  rotate: false
+  xy: 381, 1
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1

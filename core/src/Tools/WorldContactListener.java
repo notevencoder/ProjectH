@@ -1,7 +1,7 @@
 package Tools;
 
 import Sprites.InteractiveObjects;
-import Sprites.Enemys.EnemyPig;
+import Sprites.Enemies.EnemyPig;
 import Sprites.Items.Item;
 import Sprites.Player;
 import com.badlogic.gdx.Gdx;

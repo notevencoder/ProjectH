@@ -1,4 +1,4 @@
-package Sprites.Enemys;
+package Sprites.Enemies;
 
 import Tools.Drawable;
 import Tools.Updatable;

@@ -1,4 +1,4 @@
-package Sprites.Enemys;
+package Sprites.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,15 +17,19 @@ public class Pig extends Enemy{
     private State curState, prevState;
     private TextureAtlas atlas;
     private Animation animIdle, animMoving, animAttacking, animFalling;
+    private float width, height;
 
 
     public Pig(PlatScreen screen, Rectangle bounds){
-        this.screen = screen;
-        world = screen.getWorld();
-        map = screen.getMap();
-        screen.updateQueue.add(this);
+        super(screen);
+
+        screen.updateQueue.addForever(this);
+        screen.drawQueue.add(this, 3);
         defineEnemy(bounds);
         defineAnimations();
+        width = bounds.width;
+        height = bounds.height;
+        setBounds(body.getPosition().x - width / 2 / Platformer.PPM , body.getPosition().y - height / 2 / Platformer.PPM, width / Platformer.PPM, height  / Platformer.PPM);
 
     }
 
@@ -36,16 +40,15 @@ public class Pig extends Enemy{
             FixtureDef fdef = new FixtureDef();
             PolygonShape shape = new PolygonShape();
 
-            bdef.position.set(bounds.getX(), bounds.getY());
-            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((bounds.x + bounds.width / 2)/ Platformer.PPM, (bounds.y + bounds.height / 2)/ Platformer.PPM);
+            bdef.type = BodyDef.BodyType.DynamicBody;
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(bounds.width, bounds.height);
+            shape.setAsBox(bounds.width / Platformer.PPM / 2, bounds.height / Platformer.PPM / 2);
             fdef.shape = shape;
-            fdef.filter.categoryBits = Platformer.ENEMY_BIT;
+            //fdef.filter.categoryBits = Platformer.ENEMY_BIT;
             fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.PLAYER_BIT;
-
             body.createFixture(fdef).setUserData(this);
 
 
@@ -61,7 +64,7 @@ public class Pig extends Enemy{
         region = atlas.findRegion("Idle (34x28)");
 
         for (int i = 0; i < 11; i++)
-            frames.add(new TextureRegion(region, i*34,0,34,28));
+            frames.add(new TextureRegion(region, i*34 + 10,9,20,19));
 
         animIdle = new Animation(0.1f, frames);
         frames.clear();
@@ -76,7 +79,7 @@ public class Pig extends Enemy{
 
             switch (getState()){
                 case IDLE:
-                    region = (TextureRegion) animIdle.getKeyFrame(stateTimer);
+                    region = (TextureRegion) animIdle.getKeyFrame(stateTimer, true);
                     curState = State.IDLE;
                     break;
 
@@ -104,5 +107,6 @@ public class Pig extends Enemy{
     @Override
     public void update(float dt) {
         setRegion(getFrame(dt));
+        setPosition(body.getPosition().x - width / 2  / Platformer.PPM , body.getPosition().y - height / 2 / Platformer.PPM);
     }
 }

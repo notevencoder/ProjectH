@@ -1,4 +1,4 @@
-package Sprites.Enemys;
+package Sprites.Enemies;
 
 import Tools.Drawable;
 import Tools.Updatable;
@@ -16,6 +16,13 @@ public abstract class Enemy extends Sprite implements Updatable, Drawable {
     protected PlatScreen screen;
     protected Body body;
     protected float stateTimer = 0;
+
+
+    public Enemy(PlatScreen screen){
+        this.screen = screen;
+        world = screen.getWorld();
+        map = screen.getMap();
+    }
 
     abstract protected TextureRegion getFrame(float dt);
     abstract protected void hitON();
