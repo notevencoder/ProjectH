@@ -1,6 +1,7 @@
 package Tools;
 
 import Sprites.Door;
+import Sprites.Enemys.Pig;
 import Sprites.Items.Diamond;
 import Sprites.Items.Heart;
 import Sprites.Platforms;
@@ -60,6 +61,10 @@ public class B2DWorldCreator {
         for (MapObject object : map.getLayers().get("Diamonds").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             new Diamond(screen, rect);
+        }
+        for (MapObject object : map.getLayers().get("Pigs").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            new Pig(screen, rect);
         }
 
 

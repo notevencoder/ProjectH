@@ -81,6 +81,7 @@ public class Pig extends Enemy{
                     break;
 
             }
+
             stateTimer = curState == prevState ? stateTimer + dt : 0;
             prevState = curState;
             return region;
