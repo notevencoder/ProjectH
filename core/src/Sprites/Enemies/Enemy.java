@@ -1,5 +1,6 @@
 package Sprites.Enemies;
 
+import Sprites.Player;
 import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,6 +29,7 @@ public abstract class Enemy extends Sprite implements Updatable, Drawable {
     abstract protected void hitON();
     abstract protected void defineEnemy(Rectangle bounds);
     abstract protected void defineAnimations();
+    abstract public void attack(Player player);
 
 
 }

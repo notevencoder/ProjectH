@@ -1,5 +1,6 @@
 package Tools;
 
+import Sprites.Enemies.Enemy;
 import Sprites.InteractiveObjects;
 import Sprites.Enemies.EnemyPig;
 import Sprites.Items.Item;
@@ -38,10 +39,17 @@ public class WorldContactListener implements ContactListener {
                     player = fixtureB;
                     enemy = fixtureA;
                 }
-                if (player.getUserData() == "AttackRight")
-                    ((EnemyPig) enemy.getUserData()).destroyFromRight(true);
-                else if (player.getUserData() == "AttackLeft")
-                    ((EnemyPig) enemy.getUserData()).destroyFromLeft(true);
+                if (player.getUserData().getClass() == Player.class){
+                    Body body = ((Player)player.getUserData()).b2body;
+                    float direction = 1;
+                    if (((Player) player.getUserData()).isRunningRight()) direction = -1;
+
+                    float width = ( (Player) player.getUserData()).getWidth(),height = ( (Player) player.getUserData()).getHeight();
+                    body.setLinearVelocity(0,0);
+                    body.applyLinearImpulse(  10 * direction,1,body.getPosition().x + width / 2 ,body.getPosition().y  + height / 2,true);
+                    ((Enemy)enemy.getUserData()).attack((Player) player.getUserData());
+                    Gdx.app.log("Player", "has been booped");
+                }
 
                 break;
             case Platformer.PLAYER_BIT | Platformer.ITEM_BIT:
@@ -75,6 +83,7 @@ public class WorldContactListener implements ContactListener {
     }
 
 
+
     @Override
     public void endContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
@@ -96,11 +105,7 @@ public class WorldContactListener implements ContactListener {
                     player = fixtureB;
                     enemy = fixtureA;
                 }
-                if (player.getUserData() == "AttackRight")
-                    ((EnemyPig) enemy.getUserData()).destroyFromRight(false);
-                else if (player.getUserData() == "AttackLeft")
-                    ((EnemyPig) enemy.getUserData()).destroyFromLeft(false);
-                break;
+
 
             }
             case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {

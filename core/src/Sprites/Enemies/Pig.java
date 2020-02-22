@@ -1,5 +1,6 @@
 package Sprites.Enemies;
 
+import Sprites.Player;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -50,7 +51,7 @@ public class Pig extends Enemy{
             fdef.restitution = 0;
             fdef.friction = 0;
             fdef.density = 0;
-            //fdef.filter.categoryBits = Platformer.ENEMY_BIT;
+            fdef.filter.categoryBits = Platformer.ENEMY_BIT;
             fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.PLAYER_BIT;
             body.createFixture(fdef).setUserData(this);
 
@@ -72,6 +73,11 @@ public class Pig extends Enemy{
         animIdle = new Animation(0.1f, frames);
         frames.clear();
 
+
+    }
+
+    public void attack (Player player){
+        player.takeDamage();
 
     }
 

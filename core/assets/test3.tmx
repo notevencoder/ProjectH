@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="158">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="158">
  <tileset firstgid="1" name="Idle" tilewidth="46" tileheight="56" tilecount="1" columns="1">
   <image source="Sprites/11-Door/Idle.png" width="46" height="56"/>
  </tileset>
@@ -68,6 +68,6 @@
   <object id="146" x="237" y="210.5" width="16.5" height="13"/>
  </objectgroup>
  <objectgroup id="18" name="Pigs">
-  <object id="157" x="224" y="416" width="56" height="51"/>
+  <object id="157" x="287.333" y="448" width="28.3333" height="27"/>
  </objectgroup>
 </map>

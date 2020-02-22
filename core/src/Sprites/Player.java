@@ -23,7 +23,7 @@ public class Player extends Sprite implements Drawable {
     public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
-    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR}
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR,DEAD}
 
     private PlatScreen screen;
     private State currentState;
@@ -39,7 +39,7 @@ public class Player extends Sprite implements Drawable {
 
     private int lives;
 
-    private static boolean entering;
+    private static boolean entering, dead;
 
 
     private static InteractiveObjects canInteractWith = null;
@@ -52,7 +52,7 @@ public class Player extends Sprite implements Drawable {
         this.world = world;
         jumpSound = screen.getManager().get("Audio/Sounds/jump.ogg", Sound.class);
         entering = false;
-        lives = 0;
+        lives = 3;
 
         definePlayer();
         defineAnimations(screen);
@@ -73,7 +73,7 @@ public class Player extends Sprite implements Drawable {
 
 
     public void handleInput(float dt) {
-        if (!entering) {
+        if (!entering && !dead) {
             b2body.setAwake(true);
             if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f) {
                 attacking = false;
@@ -121,9 +121,17 @@ public class Player extends Sprite implements Drawable {
         if (lives > 0){
             lives--;
             stateTimer = 0;
+            if (lives == 0)
+                die();
             return true;
         }
+        else dead = true;
         return false;
+    }
+    public void die(){
+        dead = true;
+
+
     }
 
     public static void Interact(InteractiveObjects object) {
@@ -171,6 +179,11 @@ public class Player extends Sprite implements Drawable {
 
                 currentAnimation = entertheDoor;
                 break;
+            case DEAD:
+                region = (TextureRegion) animationDead.getKeyFrame(stateTimer);
+
+                currentAnimation = animationDead;
+                break;
             case STANDING:
             default:
                 region = (TextureRegion) animationIdle.getKeyFrame(stateTimer, true);
@@ -193,17 +206,20 @@ public class Player extends Sprite implements Drawable {
     }
 
     public State getState(float dt) {
-        if (!entering) {
+        if (!entering && !dead) {
             previousState = currentState;
             if (attacking) return State.ATTACKING;
             if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
             if (b2body.getLinearVelocity().y < 0) return State.FALLING;
             if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
             return State.STANDING;
-        } else {
+        } else if (entering){
             if (((Door) interactingWithNow).getCurrentAnimation().isAnimationFinished(((Door) interactingWithNow).getStateTimer())) {
                 return State.ENTER_THE_DOOR;
             } else return State.STANDING;
+        }else {
+            return State.DEAD;
+
         }
     }
 
@@ -222,7 +238,7 @@ public class Player extends Sprite implements Drawable {
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
-
+        dead = false;
 
         bdef.position.set(200 / Platformer.PPM, 100 / Platformer.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -309,7 +325,16 @@ public class Player extends Sprite implements Drawable {
         animationAttack = new Animation(0.1f, frames);
         frames.clear();
 
+        //ПОБЕДА ИЛИ СМЕРТЬ, Я ВЫБИРАЮ СМЕРТТ
+        currRegion = screen.getAtlas().findRegion("Dead (78x58)");
+        for (int i = 0; i < 4; i++)
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+        animationDead = new Animation(0.1f, frames);
+        frames.clear();
+
     }
 
-
+    public boolean isRunningRight() {
+        return runningRight;
+    }
 }
