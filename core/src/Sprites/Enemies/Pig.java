@@ -47,6 +47,9 @@ public class Pig extends Enemy{
 
             shape.setAsBox(bounds.width / Platformer.PPM / 2, bounds.height / Platformer.PPM / 2);
             fdef.shape = shape;
+            fdef.restitution = 0;
+            fdef.friction = 0;
+            fdef.density = 0;
             //fdef.filter.categoryBits = Platformer.ENEMY_BIT;
             fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.PLAYER_BIT;
             body.createFixture(fdef).setUserData(this);

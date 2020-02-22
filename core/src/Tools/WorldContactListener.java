@@ -24,15 +24,6 @@ public class WorldContactListener implements ContactListener {
         Fixture object;
         Fixture player;
 
-        if (fixtureA.getUserData() == "Head" || fixtureB.getUserData() == "Head")
-            Gdx.app.log("contact", "Head begin");
-        else if (fixtureA.getUserData() == "Legs" || fixtureB.getUserData() == "Legs")
-            Gdx.app.log("contact", "Legs begin");
-        else if (fixtureA.getUserData() == "Left" || fixtureB.getUserData() == "Left")
-            Gdx.app.log("contact", "Left begin");
-        else if (fixtureA.getUserData() == "Right" || fixtureB.getUserData() == "Right")
-            Gdx.app.log("contact", "Right begin");
-
 
         int cDef = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 

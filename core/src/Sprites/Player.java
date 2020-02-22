@@ -233,6 +233,9 @@ public class Player extends Sprite implements Drawable {
 
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
         fdef.shape = shape;
+        fdef.restitution = 0;
+        fdef.friction = 0;
+        fdef.density = 0;
         
         fdef.filter.categoryBits = Platformer.PLAYER_BIT;
         fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT | Platformer.ITEM_BIT;
