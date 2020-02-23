@@ -46,7 +46,7 @@ public class WorldContactListener implements ContactListener {
 
                     float width = ( (Player) player.getUserData()).getWidth(),height = ( (Player) player.getUserData()).getHeight();
                     body.setLinearVelocity(0,0);
-                    body.applyLinearImpulse(  10 * direction,1,body.getPosition().x + width / 2 ,body.getPosition().y  + height / 2,true);
+                    body.applyLinearImpulse(  2 * direction,1,body.getPosition().x + width / 2 ,body.getPosition().y  + height / 2,true);
                     ((Enemy)enemy.getUserData()).attack((Player) player.getUserData());
                     Gdx.app.log("Player", "has been booped");
                 }

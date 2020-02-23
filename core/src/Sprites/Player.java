@@ -23,7 +23,7 @@ public class Player extends Sprite implements Drawable {
     public final float WIDTH = 20 / Platformer.PPM, HEIGHT = 20 / Platformer.PPM;
 
     // объявляем переменные для Анимации
-    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR,DEAD}
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, ATTACKING, ENTER_THE_DOOR, DEAD, HITTED , LANDING}
 
     private PlatScreen screen;
     private State currentState;
@@ -39,7 +39,7 @@ public class Player extends Sprite implements Drawable {
 
     private int lives;
 
-    private static boolean entering, dead;
+    private static boolean entering, dead, hitted;
 
 
     private static InteractiveObjects canInteractWith = null;
@@ -52,6 +52,7 @@ public class Player extends Sprite implements Drawable {
         this.world = world;
         jumpSound = screen.getManager().get("Audio/Sounds/jump.ogg", Sound.class);
         entering = false;
+        hitted = false;
         lives = 3;
 
         definePlayer();
@@ -73,7 +74,7 @@ public class Player extends Sprite implements Drawable {
 
 
     public void handleInput(float dt) {
-        if (!entering && !dead) {
+        if (!entering && !dead && !hitted) {
             b2body.setAwake(true);
             if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f) {
                 attacking = false;
@@ -118,6 +119,7 @@ public class Player extends Sprite implements Drawable {
             return false;
     }
     public boolean takeDamage(){
+        hitted = true;
         if (lives > 0){
             lives--;
             stateTimer = 0;
@@ -130,6 +132,7 @@ public class Player extends Sprite implements Drawable {
     }
     public void die(){
         dead = true;
+
 
 
     }
@@ -161,6 +164,7 @@ public class Player extends Sprite implements Drawable {
             case ATTACKING:
                 region = (TextureRegion) animationAttack.getKeyFrame(stateTimer);
                 currentAnimation = animationAttack;
+
                 break;
             case RUNNING:
                 region = (TextureRegion) animationRun.getKeyFrame(stateTimer, true);
@@ -170,19 +174,27 @@ public class Player extends Sprite implements Drawable {
                 region = (TextureRegion) animationFall.getKeyFrame(stateTimer, true);
                 currentAnimation = animationFall;
                 break;
+            case HITTED:
+                region = (TextureRegion) animationHit.getKeyFrame(stateTimer);
+                currentAnimation = animationHit;
+                break;
             case JUMPING:
                 region = (TextureRegion) animationJump.getKeyFrame(stateTimer, true);
                 currentAnimation = animationJump;
                 break;
             case ENTER_THE_DOOR:
                 region = (TextureRegion) entertheDoor.getKeyFrame(stateTimer);
-
                 currentAnimation = entertheDoor;
                 break;
             case DEAD:
                 region = (TextureRegion) animationDead.getKeyFrame(stateTimer);
-
                 currentAnimation = animationDead;
+                break;
+
+            case LANDING:
+                region = (TextureRegion) animationGround.getKeyFrame(stateTimer);
+                Gdx.app.log("1","2");
+                currentAnimation = animationGround;
                 break;
             case STANDING:
             default:
@@ -200,6 +212,7 @@ public class Player extends Sprite implements Drawable {
         }
 
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        if (hitted && currentAnimation.isAnimationFinished(stateTimer)) hitted = false;
         previousState = currentState;
         return region;
 
@@ -208,9 +221,11 @@ public class Player extends Sprite implements Drawable {
     public State getState(float dt) {
         if (!entering && !dead) {
             previousState = currentState;
+            if (hitted) return State.HITTED;
             if (attacking) return State.ATTACKING;
             if (b2body.getLinearVelocity().y > 0) return State.JUMPING;
             if (b2body.getLinearVelocity().y < 0) return State.FALLING;
+
             if (b2body.getLinearVelocity().x != 0) return State.RUNNING;
             return State.STANDING;
         } else if (entering){
@@ -330,6 +345,18 @@ public class Player extends Sprite implements Drawable {
         for (int i = 0; i < 4; i++)
             frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
         animationDead = new Animation(0.1f, frames);
+        frames.clear();
+        //ПОБЕДА ИЛИ СМЕРТЬ, Я ВЫБИРАЮ ПО ЛИЦУ
+        currRegion = screen.getAtlas().findRegion("Hit (78x58)");
+        for (int i = 0; i < 2; i++)
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+        animationHit = new Animation(0.1f, frames);
+        frames.clear();
+        //ПОБЕДА ИЛИ СМЕРТЬ, Я ВЫБИРАЮ ПРИЗЕМЛЕНИЕ
+        currRegion = screen.getAtlas().findRegion("Ground (78x58)");
+        for (int i = 0; i < 1; i++)
+            frames.add(new TextureRegion(currRegion, i * 78, 0, 78, 58));
+        animationGround = new Animation(0.1f, frames);
         frames.clear();
 
     }

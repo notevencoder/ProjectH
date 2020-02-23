@@ -81,7 +81,6 @@ public class PlatScreen implements Screen {
 
         player = new Player(this);
         //enemy = new EnemyPig(this);
-
         drawQueue.add(player, 0);
     }
 
