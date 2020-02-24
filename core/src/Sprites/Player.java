@@ -4,6 +4,8 @@ import Tools.Drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
-public class Player extends Sprite implements Drawable {
+public class Player extends Sprite implements Drawable, Telegraph {
     public World world;
     public Body b2body;
 
@@ -71,17 +73,53 @@ public class Player extends Sprite implements Drawable {
 
     }
 
+    public void attack(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            attacking = true;
+        }
 
+
+
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+    if (!entering && !hitted && !dead)
+        switch(msg.message){
+            case(Platformer.MSG_UP):
+                jump();
+                return true;
+
+            case(Platformer.MSG_DOWN):
+                return true;
+            case(Platformer.MSG_RIGHT):
+                b2body.setLinearVelocity(2, b2body.getLinearVelocity().y);
+                Gdx.app.log("MSG_RIGHT","Got it");
+                return true;
+            case(Platformer.MSG_LEFT):
+                b2body.setLinearVelocity(-2, b2body.getLinearVelocity().y);
+                Gdx.app.log("MSG_LEFT","Got it");
+                return true;
+            case(Platformer.MSG_E):
+                canInteractWith.Interact(this);
+                b2body.setLinearVelocity(0, 0);
+                return true;
+            case(Platformer.MSG_F):
+                attack();
+                return true;
+            case (Platformer.MSG_DEFAULT):
+                b2body.setLinearVelocity(0,b2body.getLinearVelocity().y);
+                Gdx.app.log("MSG_DEFAULT","Got it");
+                return true;
+        }
+
+        return false;
+    }
 
     public void handleInput(float dt) {
         if (!entering && !dead && !hitted) {
             b2body.setAwake(true);
-            if (attacking && stateTimer >= animationAttack.getKeyFrames().length * 0.1f) {
-                attacking = false;
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                attacking = true;
-            }
+
 
             if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
                 //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
@@ -132,9 +170,6 @@ public class Player extends Sprite implements Drawable {
     }
     public void die(){
         dead = true;
-
-
-
     }
 
     public static void Interact(InteractiveObjects object) {
@@ -212,6 +247,8 @@ public class Player extends Sprite implements Drawable {
         }
 
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        if (currentAnimation == animationAttack && currentAnimation.isAnimationFinished(stateTimer))
+            attacking = false;
         if (hitted && currentAnimation.isAnimationFinished(stateTimer)) hitted = false;
         previousState = currentState;
         return region;

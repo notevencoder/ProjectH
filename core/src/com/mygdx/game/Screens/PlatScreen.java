@@ -6,7 +6,9 @@ import Tools.DrawQueue;
 import Tools.UpdateQueue;
 import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,7 +21,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Scenes.Hud;
@@ -48,6 +49,8 @@ public class PlatScreen implements Screen {
     public static UpdateQueue updateQueue;
     public static DrawQueue drawQueue;
 
+
+    private MessageManager messageManager;
 
     public PlatScreen(Platformer GAME, AssetManager manager){
 
@@ -80,12 +83,16 @@ public class PlatScreen implements Screen {
         new B2DWorldCreator( this);
 
         player = new Player(this);
-        //enemy = new EnemyPig(this);
         drawQueue.add(player, 0);
+
+        defineMsgDispatcher();
     }
 
     public void update (float dt){
+        messageManager.update();
+
         handleInput(dt);
+
 
         world.step(1/60f,6,2);
         updateQueue.update(dt);
@@ -101,8 +108,36 @@ public class PlatScreen implements Screen {
     }
 
     public void handleInput(float dt){
+        boolean fl = false;
 
-        player.handleInput(dt);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            messageManager.dispatchMessage(Platformer.MSG_F);
+            fl = true;
+        }
+
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W))
+            //&& (getState() != Player.State.FALLING && getState() != State.JUMPING)
+        ) {
+            messageManager.dispatchMessage(Platformer.MSG_UP);
+            fl = true;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            messageManager.dispatchMessage(Platformer.MSG_RIGHT);
+            fl = true;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            messageManager.dispatchMessage(Platformer.MSG_LEFT);
+            fl = true;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            fl = true;
+            messageManager.dispatchMessage(Platformer.MSG_E);
+        }
+
+        if (!fl) messageManager.dispatchMessage(Platformer.MSG_DEFAULT);
+
+
+        //player.handleInput(dt);
     }
 
     @Override
@@ -187,6 +222,14 @@ public class PlatScreen implements Screen {
 
     public Viewport getPort(){
         return gamePort;
+    }
+
+    public void defineMsgDispatcher(){
+        messageManager = MessageManager.getInstance();
+
+        messageManager.addListeners(player,
+                Platformer.MSG_DOWN, Platformer.MSG_UP,Platformer.MSG_LEFT,Platformer.MSG_RIGHT,
+                Platformer.MSG_E, Platformer.MSG_F, Platformer.MSG_DEFAULT);
     }
 
 }

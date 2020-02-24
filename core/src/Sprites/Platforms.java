@@ -18,6 +18,7 @@ public class Platforms extends InteractiveObjects implements Updatable {
     public Platforms(PlatScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setSensor(true);
+
         fixture.setUserData(this);
         SetCategoryFilter(Platformer.PLATFORM_BIT);
         PlatScreen.updateQueue.addForever(this);

@@ -29,7 +29,7 @@ public class B2DWorldCreator {
         fdef = new FixtureDef();
 
         // Ground
-        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get("ground").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -39,17 +39,19 @@ public class B2DWorldCreator {
 
             shape.setAsBox((rect.getWidth() / 2) / Platformer.PPM,(rect.getHeight() / 2) / Platformer.PPM);
             fdef.shape = shape;
-            fdef.friction = 0;
+            fdef.friction = 0.001f;
+
             body.createFixture(fdef).setUserData("ground");
         }
 
+
         // InteractiveObjects
-        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get("Doors").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Door(screen, rect);
         }
-        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get("Platforms").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             new Platforms(screen, rect);
         }

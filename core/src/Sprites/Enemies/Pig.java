@@ -1,7 +1,12 @@
 package Sprites.Enemies;
 
 import Sprites.Player;
+import Tools.Drawable;
+import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.GdxAI;
+import com.badlogic.gdx.ai.Timepiece;
+import com.badlogic.gdx.ai.msg.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,17 +19,19 @@ import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
 
-public class Pig extends Enemy{
+public class Pig extends Enemy {
 
-    private enum State{IDLE,ATTACKING,MOVE};
-    private enum Mode {PASSIVE};
+
+
+    private enum State{IDLE,ATTACKING,MOVE;};
+
+    private enum Mode {PASSIVE;};
     private State curState, prevState;
     private TextureAtlas atlas;
     private Animation animIdle, animMoving, animAttacking, animFalling, curAnim;
     private float width, height;
     private Vector2 areaL, areaR;
     private boolean onRight, attacking;
-
 
     public Pig(PlatScreen screen, Rectangle bounds){
         super(screen);
@@ -62,25 +69,16 @@ public class Pig extends Enemy{
             fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.PLAYER_BIT;
             body.createFixture(fdef).setUserData(this);
 
-            areaR = new Vector2(body.getPosition().x  , body.getPosition().y);
-            areaL = new Vector2(body.getPosition().x - 1, body.getPosition().y);
+
 
 
 
     }
 
     public void act(){
-        float xCenter = body.getPosition().x + width / 2, yCenter = body.getPosition().y + height / 2;
+                float xCenter = body.getPosition().x + width / 2, yCenter = body.getPosition().y + height / 2;
         //body.setLinearVelocity(-0.2f,0);
-        switch (getMode()){
-            case PASSIVE:
-                if (onRight && body.getPosition().x < areaR.x)
-                    body.setLinearVelocity(0.2f,0);
-                else if (!onRight && body.getPosition().x + width> areaL.x)
-                    body.setLinearVelocity(-0.2f,0);
-                break;
 
-        }
 
     }
 
@@ -118,6 +116,7 @@ public class Pig extends Enemy{
     }
 
     public void attack (Player player){
+
         player.takeDamage();
         attacking = true;
         Gdx.app.log("Pig","ATTACK!!!!");
@@ -170,10 +169,10 @@ public class Pig extends Enemy{
         if (Math.abs(body.getLinearVelocity().x) > 0) return State.MOVE;
         return State.IDLE;
     }
+
     protected Mode getMode() {
         return Mode.PASSIVE;
     }
-
     @Override
     protected void hitON() {
 
@@ -190,5 +189,30 @@ public class Pig extends Enemy{
         setRegion(getFrame(dt));
 
         setPosition(body.getPosition().x - width / 2  / Platformer.PPM , body.getPosition().y - height / 2 / Platformer.PPM);
+    }
+
+
+
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+
+        switch(msg.message){
+            case(Platformer.MSG_UP):
+
+                return true;
+            case(Platformer.MSG_DOWN):
+                return true;
+            case(Platformer.MSG_RIGHT):
+                return true;
+            case(Platformer.MSG_LEFT):
+                return true;
+            case(Platformer.MSG_E):
+                return true;
+            case(Platformer.MSG_F):
+                return true;
+        }
+
+        return false;
     }
 }
