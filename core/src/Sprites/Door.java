@@ -1,8 +1,10 @@
 package Sprites;
 
+import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,11 +13,12 @@ import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 import com.sun.tools.javac.comp.Enter;
 
-public class Door extends InteractiveObjects implements Updatable {
+public class Door extends InteractiveObjects implements Updatable, Drawable {
 
     public enum State {OPEN, IDLE, CLOSE}
+
     private boolean Entering;
-    private Animation opening;
+    public Animation opening;
     private Animation closing;
     private Animation idle;
     private Animation currentAnimation;
@@ -40,16 +43,23 @@ public class Door extends InteractiveObjects implements Updatable {
         fixture.setSensor(true);
         PlatScreen.updateQueue.addForever(this);
 
-        PlatScreen.updateQueue.addToDrawable(this);
-        PlatScreen.updateQueue.addForever(this);
-        setRegion((TextureRegion) opening.getKeyFrame(0, true));
-        setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM , 46/ Platformer.PPM, 56 / Platformer.PPM);
 
+        PlatScreen.drawQueue.add(this, 5);
+        //setRegion((TextureRegion) openning.getKeyFrame(0, true));
+
+        setBounds(bounds.getX() / Platformer.PPM, bounds.getY() / Platformer.PPM, 46 / Platformer.PPM, 56 / Platformer.PPM);
+
+    }
+
+    @Override
+    public void drawMe(SpriteBatch batch) {
+        draw(batch);
     }
 
     @Override
     public void Interact(Player player) {
         Entering = true;
+
         curState = State.OPEN;
         interector = player;
         player.Interact(this);
@@ -69,14 +79,14 @@ public class Door extends InteractiveObjects implements Updatable {
         curRegion = atlas.findRegion("Closing (46x56)");
         for (int i = 0; i < 3; i++)
             frames.add(new TextureRegion(curRegion, i * 46, 0, 46, 56));
-        closing = new Animation(0.8f, frames);
+        closing = new Animation(0.1f, frames);
         frames.clear();
 
         //Анимация открытия
         curRegion = atlas.findRegion("Opening (46x56)");
         for (int i = 0; i < 5; i++)
             frames.add(new TextureRegion(curRegion, i * 46, 0, 46, 56));
-        opening = new Animation(0.8f, frames);
+        opening = new Animation(0.1f, frames);
         frames.clear();
         //Анимация покоя
         curRegion = atlas.findRegion("Idle");
@@ -90,14 +100,15 @@ public class Door extends InteractiveObjects implements Updatable {
 
     private State getState(float dt) {
         //Gdx.app.log("getState" , "Enter");
-        if (Entering){
+        if (Entering) {
             //Gdx.app.log("getState" , "Entering");
-            if (currentAnimation.isAnimationFinished(getStateTimer())){
+            if (currentAnimation.isAnimationFinished(getStateTimer())) {
 
                 //Gdx.app.log("DoorState", "AnimationFinished");
-                if(currentAnimation == opening && interector.getState(dt) != Player.State.STANDING &&interector.getCurrentAnimation().isAnimationFinished(interector.getStateTimer())){
+                if (currentAnimation == opening && interector.getState(dt) != Player.State.STANDING && interector.getCurrentAnimation().isAnimationFinished(interector.getStateTimer())) {
                     Gdx.app.log("DoorState", "Close");
-                        return State.CLOSE;
+                    screen.getPlayer().onEnter();
+                    return State.CLOSE;
                 }
 
             } else return curState;
@@ -109,7 +120,7 @@ public class Door extends InteractiveObjects implements Updatable {
         /**/
     }
 
-    public static Rectangle getBounds(){
+    public static Rectangle getBounds() {
         return bounds;
 
     }
@@ -129,7 +140,7 @@ public class Door extends InteractiveObjects implements Updatable {
             case CLOSE:
                 region = (TextureRegion) closing.getKeyFrame(stateTimer);
                 currentAnimation = closing;
-                Gdx.app.log("getFrame" , "Close");
+                Gdx.app.log("getFrame", "Close");
                 break;
             case IDLE:
             default:
@@ -145,22 +156,18 @@ public class Door extends InteractiveObjects implements Updatable {
         return region;
     }
 
-    public Animation getCurrentAnimation(){
+    public Animation getCurrentAnimation() {
         return currentAnimation;
 
     }
 
-    public float getStateTimer(){
+    public float getStateTimer() {
         return stateTimer;
 
     }
 
     @Override
     public void update(float dt) {
-        //setPosition(bounds.getX()/ Platformer.PPM, bounds.getY() / Platformer.PPM);
         setRegion(getFrame(dt));
-
-        //Gdx.app.log("Door", "Updated");
-
     }
 }

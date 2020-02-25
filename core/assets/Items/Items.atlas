@@ -1,0 +1,54 @@
+
+Items.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Big Diamond Idle (18x14)
+  rotate: false
+  xy: 1, 1
+  size: 180, 14
+  orig: 180, 14
+  offset: 0, 0
+  index: -1
+Big Heart Idle (18x14)
+  rotate: false
+  xy: 183, 1
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+Small Diamond (18x14)
+  rotate: false
+  xy: 329, 1
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+Small Heart Idle (18x14)
+  rotate: false
+  xy: 475, 1
+  size: 144, 14
+  orig: 144, 14
+  offset: 0, 0
+  index: -1
+Big Diamond Hit (18x14)
+  rotate: false
+  xy: 621, 1
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
+Big Heart Hit (18x14)
+  rotate: false
+  xy: 659, 1
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1
+Small Heart Hit (18x14)
+  rotate: false
+  xy: 697, 1
+  size: 36, 14
+  orig: 36, 14
+  offset: 0, 0
+  index: -1

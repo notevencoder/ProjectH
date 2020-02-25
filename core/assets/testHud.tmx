@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1" height="1" tilewidth="66" tileheight="34" infinite="0" nextlayerid="3" nextobjectid="6">
+ <tileset firstgid="1" name="Live Bar" tilewidth="66" tileheight="34" tilecount="1" columns="1">
+  <image source="Sprites/12-Live and Coins/Live Bar.png" width="66" height="34"/>
+ </tileset>
+ <layer id="1" name="Слой тайлов 1" width="1" height="1">
+  <data encoding="base64" compression="zlib">
+   eAFjZGBgAAAACAAC
+  </data>
+ </layer>
+ <objectgroup id="2" name="Слой объектов 1">
+  <object id="1" x="18.2813" y="14.0027" width="7.97374" height="6.80686"/>
+  <object id="2" x="29.1722" y="14.0027" width="7.77926" height="7.00134"/>
+  <object id="3" x="40.2577" y="14.0027" width="7.58478" height="6.61237"/>
+ </objectgroup>
+</map>

@@ -1,14 +1,21 @@
 package Tools;
 
-import Sprites.Door;
+import Sprites.Enemies.Enemy;
 import Sprites.InteractiveObjects;
-import Sprites.Platforms;
+import Sprites.Items.Item;
 import Sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 
 public class WorldContactListener implements ContactListener {
+    private PlatScreen screen;
+
+    public WorldContactListener(PlatScreen screen) {
+        this.screen = screen;
+    }
+
     @Override
     public void beginContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
@@ -17,32 +24,63 @@ public class WorldContactListener implements ContactListener {
         Fixture object;
         Fixture player;
 
-        if (fixtureA.getUserData() == "Head" || fixtureB.getUserData() == "Head")
-            Gdx.app.log("contact", "Head begin");
-        else if (fixtureA.getUserData() == "Legs" || fixtureB.getUserData() == "Legs")
-            Gdx.app.log("contact", "Legs begin");
-        else if (fixtureA.getUserData() == "Left" || fixtureB.getUserData() == "Left")
-            Gdx.app.log("contact", "Left begin");
-        else if (fixtureA.getUserData() == "Right" || fixtureB.getUserData() == "Right")
-            Gdx.app.log("contact", "Right begin");
-        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class){
 
-            if (fixtureA.getUserData().getClass() == Door.class){
-                object = fixtureA;
-                player = fixtureB;
+        int cDef = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
+
+        switch (cDef) {
+            case Platformer.ENEMY_BIT | Platformer.PLAYER_BIT:
+
+                Fixture enemy;
+                if (fixtureA.getFilterData().categoryBits == Platformer.PLAYER_BIT) {
+                    player = fixtureA;
+                    enemy = fixtureB;
+                } else {
+                    player = fixtureB;
+                    enemy = fixtureA;
+                }
+                if (player.getUserData().getClass() == Player.class){
+                    Body body = ((Player)player.getUserData()).b2body;
+                    float direction = 1;
+                    if (((Player) player.getUserData()).isRunningRight()) direction = -1;
+
+                    float width = ( (Player) player.getUserData()).getWidth(),height = ( (Player) player.getUserData()).getHeight();
+                    body.setLinearVelocity(0,0);
+                    body.applyLinearImpulse(  2 * direction,1,body.getPosition().x + width / 2 ,body.getPosition().y  + height / 2,true);
+                    ((Enemy)enemy.getUserData()).attack((Player) player.getUserData());
+                    Gdx.app.log("Player", "has been booped");
+                }
+
+                break;
+            case Platformer.PLAYER_BIT | Platformer.ITEM_BIT:
+                if (fixtureA.getUserData().getClass() == Player.class) {
+                    player = fixtureA;
+                    object = fixtureB;
+                } else if (fixtureB.getUserData().getClass() == Player.class) {
+                    player = fixtureB;
+                    object = fixtureA;
+                } else
+                    break;
+
+                ((Item) object.getUserData()).onTake();
+                break;
+            case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {
+                if (fixtureB.getUserData().getClass() == Player.class) {
+                    object = fixtureA;
+                    player = fixtureB;
+                } else if (fixtureA.getUserData().getClass() == Player.class) {
+                    object = fixtureB;
+                    player = fixtureA;
+                } else
+                    break;
+
+                ((Player) player.getUserData()).setCanInteractWithNow((InteractiveObjects) object.getUserData());
+
+                break;
             }
-            else{
-                object = fixtureB;
-                player = fixtureA;
-            }
-            PlatScreen.getPlayer().setCanInteractWithNow((InteractiveObjects) object.getUserData());
-
-
-
         }
 
-
     }
+
 
 
     @Override
@@ -53,24 +91,37 @@ public class WorldContactListener implements ContactListener {
         Fixture object;
         Fixture player;
 
-        if (fixtureA.getUserData().getClass() == Door.class || fixtureB.getUserData().getClass() == Door.class){
+        int cDef = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 
-            if (fixtureA.getUserData().getClass() == Door.class){
-                object = fixtureA;
-                player = fixtureB;
+        switch (cDef) {
+            case Platformer.ENEMY_BIT | Platformer.PLAYER_BIT: {
+
+                Fixture enemy;
+                if (fixtureA.getFilterData().categoryBits == Platformer.PLAYER_BIT) {
+                    player = fixtureA;
+                    enemy = fixtureB;
+                } else {
+                    player = fixtureB;
+                    enemy = fixtureA;
+                }
+
+
             }
-            else{
-                object = fixtureB;
-                player = fixtureA;
+            case Platformer.PLAYER_BIT | Platformer.DOOR_BIT: {
+                if (fixtureB.getUserData().getClass() == Player.class) {
+                    object = fixtureA;
+                    player = fixtureB;
+                } else if (fixtureA.getUserData().getClass() == Player.class) {
+                    object = fixtureB;
+                    player = fixtureA;
+                } else
+                    break;
+
+                ((Player) player.getUserData()).setCanInteractWithNow(null);
+
+                break;
             }
-
-            PlatScreen.getPlayer().setCanInteractWithNow(null);
-
-
-
         }
-
-
     }
 
     @Override
