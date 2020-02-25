@@ -1,10 +1,10 @@
-package Tools;
+package com.mygdx.game.Tools;
 
-import Sprites.Door;
-import Sprites.Enemies.Pig;
-import Sprites.Items.Diamond;
-import Sprites.Items.Heart;
-import Sprites.Platforms;
+import com.mygdx.game.Sprites.Door;
+import com.mygdx.game.Sprites.Enemies.Pig;
+import com.mygdx.game.Sprites.Items.Diamond;
+import com.mygdx.game.Sprites.Items.Heart;
+import com.mygdx.game.Sprites.Platforms;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;

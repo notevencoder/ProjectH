@@ -1,14 +1,9 @@
-package Sprites;
+package com.mygdx.game.Sprites;
 
-import Tools.Updatable;
+import com.mygdx.game.Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.StreamUtils;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 

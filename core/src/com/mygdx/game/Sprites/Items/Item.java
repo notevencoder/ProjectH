@@ -1,8 +1,8 @@
-package Sprites.Items;
+package com.mygdx.game.Sprites.Items;
 
-import Tools.Box2DCreator;
-import Tools.Drawable;
-import Tools.Updatable;
+import com.mygdx.game.Tools.Box2DCreator;
+import com.mygdx.game.Tools.Drawable;
+import com.mygdx.game.Tools.Updatable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -56,20 +56,6 @@ public abstract class Item extends Sprite implements Updatable, Drawable {
 
     //Создаем тело предмета
     private void defineItem(){
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
-        bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set((bounds.getX() + bounds.getWidth() / 2 )/ Platformer.PPM, (bounds.getY() + bounds.getHeight() / 2) / Platformer.PPM);
-
-        body = world.createBody(bdef);
-        shape.setAsBox( (bounds.getWidth() / 2) / Platformer.PPM, (bounds.getHeight() / 2) / Platformer.PPM);
-        fdef.shape = shape;
-        fdef.isSensor = true;
-
-        fixture = body.createFixture(fdef);
-
         Box2DCreator creator = screen.getBoxCreator();
         body = creator.createStaticBody((bounds.getX() + bounds.getWidth() / 2 )/ Platformer.PPM, (bounds.getY() + bounds.getHeight() / 2) / Platformer.PPM);
         fixture = creator.createSquareFixture(body, 0, 0, (bounds.getWidth() / 2) / Platformer.PPM,

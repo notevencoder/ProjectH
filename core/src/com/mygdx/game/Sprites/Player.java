@@ -1,10 +1,9 @@
-package Sprites;
+package com.mygdx.game.Sprites;
 
-import Tools.Box2DCreator;
-import Tools.Drawable;
+import com.mygdx.game.Tools.Box2DCreator;
+import com.mygdx.game.Tools.Drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.audio.Sound;

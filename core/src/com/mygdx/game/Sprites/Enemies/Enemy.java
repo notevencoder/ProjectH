@@ -1,8 +1,8 @@
-package Sprites.Enemies;
+package com.mygdx.game.Sprites.Enemies;
 
-import Sprites.Player;
-import Tools.Drawable;
-import Tools.Updatable;
+import com.mygdx.game.Sprites.Player;
+import com.mygdx.game.Tools.Drawable;
+import com.mygdx.game.Tools.Updatable;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

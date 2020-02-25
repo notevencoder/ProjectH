@@ -1,7 +1,7 @@
 package com.mygdx.game.Screens;
 
-import Sprites.Player;
-import Tools.*;
+import com.mygdx.game.Sprites.Player;
+import com.mygdx.game.Tools.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;

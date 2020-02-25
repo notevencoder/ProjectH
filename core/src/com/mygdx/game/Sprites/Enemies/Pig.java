@@ -1,12 +1,8 @@
-package Sprites.Enemies;
+package com.mygdx.game.Sprites.Enemies;
 
-import Sprites.Player;
-import Tools.Box2DCreator;
-import Tools.Drawable;
-import Tools.Updatable;
+import com.mygdx.game.Sprites.Player;
+import com.mygdx.game.Tools.Box2DCreator;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.GdxAI;
-import com.badlogic.gdx.ai.Timepiece;
 import com.badlogic.gdx.ai.msg.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

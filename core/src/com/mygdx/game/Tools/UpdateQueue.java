@@ -1,8 +1,6 @@
-package Tools;
+package com.mygdx.game.Tools;
 
-import Sprites.Door;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public class UpdateQueue {

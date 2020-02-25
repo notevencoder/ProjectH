@@ -1,4 +1,4 @@
-package Tools;
+package com.mygdx.game.Tools;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;

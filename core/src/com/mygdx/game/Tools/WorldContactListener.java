@@ -1,9 +1,9 @@
-package Tools;
+package com.mygdx.game.Tools;
 
-import Sprites.Enemies.Enemy;
-import Sprites.InteractiveObjects;
-import Sprites.Items.Item;
-import Sprites.Player;
+import com.mygdx.game.Sprites.Enemies.Enemy;
+import com.mygdx.game.Sprites.InteractiveObjects;
+import com.mygdx.game.Sprites.Items.Item;
+import com.mygdx.game.Sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Platformer;

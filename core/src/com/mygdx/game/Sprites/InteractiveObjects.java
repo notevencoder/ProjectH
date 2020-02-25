@@ -1,12 +1,11 @@
-package Sprites;
+package com.mygdx.game.Sprites;
 
-import Tools.Box2DCreator;
+import com.mygdx.game.Tools.Box2DCreator;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
 

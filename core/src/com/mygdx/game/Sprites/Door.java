@@ -1,7 +1,7 @@
-package Sprites;
+package com.mygdx.game.Sprites;
 
-import Tools.Drawable;
-import Tools.Updatable;
+import com.mygdx.game.Tools.Drawable;
+import com.mygdx.game.Tools.Updatable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Platformer;
 import com.mygdx.game.Screens.PlatScreen;
-import com.sun.tools.javac.comp.Enter;
 
 public class Door extends InteractiveObjects implements Updatable, Drawable {
 
