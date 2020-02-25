@@ -1,15 +1,13 @@
 package com.mygdx.game.Screens;
 
 import Sprites.Player;
-import Tools.B2DWorldCreator;
-import Tools.DrawQueue;
-import Tools.UpdateQueue;
-import Tools.WorldContactListener;
+import Tools.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -43,6 +41,7 @@ public class PlatScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private Player player;
+    private Box2DCreator boxCreator;
     //EnemyPig enemy;
 
     private TextureAtlas atlas;
@@ -80,6 +79,7 @@ public class PlatScreen implements Screen {
         world.setContactListener(new WorldContactListener(this));
         b2dr = new Box2DDebugRenderer();
 
+        boxCreator = new Box2DCreator(this);
         new B2DWorldCreator( this);
 
         player = new Player(this);
@@ -200,6 +200,11 @@ public class PlatScreen implements Screen {
 
     }
 
+    public Sound initSound(String relativePath){
+
+        return manager.get("Audio/Sounds/" + relativePath, Sound.class);
+    }
+
     public Player getPlayer(){
         return player;
     }
@@ -222,6 +227,10 @@ public class PlatScreen implements Screen {
 
     public Viewport getPort(){
         return gamePort;
+    }
+
+    public Box2DCreator getBoxCreator(){
+        return boxCreator;
     }
 
     public void defineMsgDispatcher(){

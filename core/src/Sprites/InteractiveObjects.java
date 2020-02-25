@@ -1,5 +1,6 @@
 package Sprites;
 
+import Tools.Box2DCreator;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -23,21 +24,10 @@ public abstract class InteractiveObjects extends Sprite {
         this.map = screen.getMap();
         this.world = screen.getWorld();
         this.screen = screen;
+        Box2DCreator creator = screen.getBoxCreator();
 
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
-        bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set((bounds.getX() + bounds.getWidth() / 2 )/ Platformer.PPM, (bounds.getY() + bounds.getHeight() / 2) / Platformer.PPM);
-
-        body = world.createBody(bdef);
-        shape.setAsBox((bounds.getWidth() / 2) / Platformer.PPM, (bounds.getHeight() / 2) / Platformer.PPM);
-        fdef.shape = shape;
-        fdef.friction = 0;
-
-        fixture = body.createFixture(fdef);
-
+        body = creator.createStaticBody((bounds.getX() + bounds.getWidth() / 2 )/ Platformer.PPM, (bounds.getY() + bounds.getHeight() / 2) / Platformer.PPM);
+        fixture = creator.createSquareFixture(body, (bounds.getWidth() / 2) / Platformer.PPM, (bounds.getHeight() / 2) / Platformer.PPM);
     }
 
     public void SetCategoryFilter(short filterBit){

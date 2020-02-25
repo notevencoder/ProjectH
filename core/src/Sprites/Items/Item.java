@@ -1,5 +1,6 @@
 package Sprites.Items;
 
+import Tools.Box2DCreator;
 import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -68,6 +69,11 @@ public abstract class Item extends Sprite implements Updatable, Drawable {
         fdef.isSensor = true;
 
         fixture = body.createFixture(fdef);
+
+        Box2DCreator creator = screen.getBoxCreator();
+        body = creator.createStaticBody((bounds.getX() + bounds.getWidth() / 2 )/ Platformer.PPM, (bounds.getY() + bounds.getHeight() / 2) / Platformer.PPM);
+        fixture = creator.createSquareFixture(body, 0, 0, (bounds.getWidth() / 2) / Platformer.PPM,
+                (bounds.getHeight() / 2) / Platformer.PPM,0, true, 0,0,0);
     }
 
     //Вызывается при взятии

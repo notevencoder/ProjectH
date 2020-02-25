@@ -37,6 +37,7 @@ public class Platformer extends Game {
 		 batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("Audio/Sounds/jump.ogg", Sound.class);
+		manager.load("Audio/Sounds/death.mp3", Sound.class);
 		manager.finishLoading();
 		setScreen(new PlatScreen(this, manager));
 	}
@@ -51,5 +52,7 @@ public class Platformer extends Game {
 
 		batch.dispose();
 	}
+
+
 
 }

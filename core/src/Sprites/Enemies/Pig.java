@@ -1,6 +1,7 @@
 package Sprites.Enemies;
 
 import Sprites.Player;
+import Tools.Box2DCreator;
 import Tools.Drawable;
 import Tools.Updatable;
 import com.badlogic.gdx.Gdx;
@@ -22,10 +23,13 @@ import com.mygdx.game.Screens.PlatScreen;
 public class Pig extends Enemy {
 
 
+    private enum State {IDLE, ATTACKING, MOVE;}
 
-    private enum State{IDLE,ATTACKING,MOVE;};
+    ;
 
-    private enum Mode {PASSIVE;};
+    private enum Mode {PASSIVE;}
+
+    ;
     private State curState, prevState;
     private TextureAtlas atlas;
     private Animation animIdle, animMoving, animAttacking, animFalling, curAnim;
@@ -33,7 +37,7 @@ public class Pig extends Enemy {
     private Vector2 areaL, areaR;
     private boolean onRight, attacking;
 
-    public Pig(PlatScreen screen, Rectangle bounds){
+    public Pig(PlatScreen screen, Rectangle bounds) {
         super(screen);
 
         screen.updateQueue.addForever(this);
@@ -42,41 +46,25 @@ public class Pig extends Enemy {
         defineAnimations();
         width = bounds.width;
         height = bounds.height;
-        setBounds(body.getPosition().x - width / 2 / Platformer.PPM , body.getPosition().y - height / 2 / Platformer.PPM, width / Platformer.PPM, height  / Platformer.PPM);
+        setBounds(body.getPosition().x - width / 2 / Platformer.PPM, body.getPosition().y - height / 2 / Platformer.PPM, width / Platformer.PPM, height / Platformer.PPM);
 
     }
 
     @Override
     protected void defineEnemy(Rectangle bounds) {
-            onRight = false;
+        onRight = false;
+        attacking = false;
 
-            attacking = false;
-            BodyDef bdef = new BodyDef();
-            FixtureDef fdef = new FixtureDef();
-            PolygonShape shape = new PolygonShape();
-
-            bdef.position.set((bounds.x + bounds.width / 2)/ Platformer.PPM, (bounds.y + bounds.height / 2)/ Platformer.PPM);
-            bdef.type = BodyDef.BodyType.DynamicBody;
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(bounds.width / Platformer.PPM / 2, bounds.height / Platformer.PPM / 2);
-            fdef.shape = shape;
-            fdef.restitution = 0;
-            fdef.friction = 0;
-            fdef.density = 0;
-            fdef.filter.categoryBits = Platformer.ENEMY_BIT;
-            fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.PLAYER_BIT;
-            body.createFixture(fdef).setUserData(this);
-
-
-
-
+        Box2DCreator creator = screen.getBoxCreator();
+        body = creator.createDynamicBody((bounds.x + bounds.width / 2) / Platformer.PPM, (bounds.y + bounds.height / 2) / Platformer.PPM);
+        Fixture fixture = creator.createSquareFixture(body, bounds.width / Platformer.PPM / 2, bounds.height / Platformer.PPM / 2 );
+        fixture.setFilterData(creator.createFilter(fixture, Platformer.ENEMY_BIT, Platformer.DEFAULT_BIT, Platformer.PLAYER_BIT));
+        fixture.setUserData(this);
 
     }
 
-    public void act(){
-                float xCenter = body.getPosition().x + width / 2, yCenter = body.getPosition().y + height / 2;
+    public void act() {
+        float xCenter = body.getPosition().x + width / 2, yCenter = body.getPosition().y + height / 2;
         //body.setLinearVelocity(-0.2f,0);
 
 
@@ -91,7 +79,7 @@ public class Pig extends Enemy {
         region = atlas.findRegion("Idle (34x28)");
 
         for (int i = 0; i < 11; i++)
-            frames.add(new TextureRegion(region, i*34 + 10,9,20,19));
+            frames.add(new TextureRegion(region, i * 34 + 10, 9, 20, 19));
 
         animIdle = new Animation(0.1f, frames);
         frames.clear();
@@ -99,7 +87,7 @@ public class Pig extends Enemy {
 
         region = atlas.findRegion("Attack (34x28)");
         for (int i = 0; i < 5; i++)
-            frames.add(new TextureRegion(region, i*34 + 10,9,20,23));
+            frames.add(new TextureRegion(region, i * 34 + 10, 9, 20, 23));
 
         animAttacking = new Animation(0.1f, frames);
         frames.clear();
@@ -107,7 +95,7 @@ public class Pig extends Enemy {
 
         region = atlas.findRegion("Run (34x28)");
         for (int i = 0; i < 6; i++)
-            frames.add(new TextureRegion(region, i*34 + 10,9,20,23));
+            frames.add(new TextureRegion(region, i * 34 + 10, 9, 20, 23));
 
         animMoving = new Animation(0.1f, frames);
         frames.clear();
@@ -115,51 +103,51 @@ public class Pig extends Enemy {
 
     }
 
-    public void attack (Player player){
+    public void attack(Player player) {
 
         player.takeDamage();
         attacking = true;
-        Gdx.app.log("Pig","ATTACK!!!!");
+        Gdx.app.log("Pig", "ATTACK!!!!");
 
     }
 
     @Override
     protected TextureRegion getFrame(float dt) {
-            TextureRegion region = new TextureRegion();
+        TextureRegion region = new TextureRegion();
 
 
-            switch (getState(dt)){
-                case ATTACKING:
-                    curAnim = animAttacking;
-                    region = (TextureRegion) animAttacking.getKeyFrame(stateTimer);
-                    curState = State.ATTACKING;
-                    break;
-                case MOVE:
-                    curAnim = animMoving;
-                    region = (TextureRegion) animMoving.getKeyFrame(stateTimer,true);
-                    curState = State.MOVE;
-                    break;
-                case IDLE:
-                    curAnim = animIdle;
-                    region = (TextureRegion) animIdle.getKeyFrame(stateTimer, true);
-                    curState = State.IDLE;
-                    break;
+        switch (getState(dt)) {
+            case ATTACKING:
+                curAnim = animAttacking;
+                region = (TextureRegion) animAttacking.getKeyFrame(stateTimer);
+                curState = State.ATTACKING;
+                break;
+            case MOVE:
+                curAnim = animMoving;
+                region = (TextureRegion) animMoving.getKeyFrame(stateTimer, true);
+                curState = State.MOVE;
+                break;
+            case IDLE:
+                curAnim = animIdle;
+                region = (TextureRegion) animIdle.getKeyFrame(stateTimer, true);
+                curState = State.IDLE;
+                break;
 
-            }
+        }
 
-            if (body.getLinearVelocity().x > 0) onRight = true;
-            else if (body.getLinearVelocity().x < 0) onRight = false;
-            if (onRight && !isFlipX())
-                region.flip(true, false);
+        if (body.getLinearVelocity().x > 0) onRight = true;
+        else if (body.getLinearVelocity().x < 0) onRight = false;
+        if (onRight && !isFlipX())
+            region.flip(true, false);
 
-            if (!onRight && isFlipX())
-                region.flip(true, false);
+        if (!onRight && isFlipX())
+            region.flip(true, false);
 
 
-            stateTimer = curState == prevState ? stateTimer + dt : 0;
-            if (curAnim.isAnimationFinished(stateTimer)) attacking = false;
-            prevState = curState;
-            return region;
+        stateTimer = curState == prevState ? stateTimer + dt : 0;
+        if (curAnim.isAnimationFinished(stateTimer)) attacking = false;
+        prevState = curState;
+        return region;
     }
 
 
@@ -173,6 +161,7 @@ public class Pig extends Enemy {
     protected Mode getMode() {
         return Mode.PASSIVE;
     }
+
     @Override
     protected void hitON() {
 
@@ -188,28 +177,26 @@ public class Pig extends Enemy {
         act();
         setRegion(getFrame(dt));
 
-        setPosition(body.getPosition().x - width / 2  / Platformer.PPM , body.getPosition().y - height / 2 / Platformer.PPM);
+        setPosition(body.getPosition().x - width / 2 / Platformer.PPM, body.getPosition().y - height / 2 / Platformer.PPM);
     }
-
-
 
 
     @Override
     public boolean handleMessage(Telegram msg) {
 
-        switch(msg.message){
-            case(Platformer.MSG_UP):
+        switch (msg.message) {
+            case (Platformer.MSG_UP):
 
                 return true;
-            case(Platformer.MSG_DOWN):
+            case (Platformer.MSG_DOWN):
                 return true;
-            case(Platformer.MSG_RIGHT):
+            case (Platformer.MSG_RIGHT):
                 return true;
-            case(Platformer.MSG_LEFT):
+            case (Platformer.MSG_LEFT):
                 return true;
-            case(Platformer.MSG_E):
+            case (Platformer.MSG_E):
                 return true;
-            case(Platformer.MSG_F):
+            case (Platformer.MSG_F):
                 return true;
         }
 

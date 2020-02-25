@@ -1,5 +1,6 @@
 package Sprites;
 
+import Tools.Box2DCreator;
 import Tools.Drawable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -36,7 +37,7 @@ public class Player extends Sprite implements Drawable, Telegraph {
     public boolean runningRight;
     public boolean stepped = false;
     public boolean attacking = false;
-    private Sound jumpSound;
+    private Sound jumpSound, deathSound;
     private Animation currentAnimation;
 
     private int lives;
@@ -52,11 +53,11 @@ public class Player extends Sprite implements Drawable, Telegraph {
         this.screen = screen;
         this.world = screen.getWorld();
         this.world = world;
-        jumpSound = screen.getManager().get("Audio/Sounds/jump.ogg", Sound.class);
+
         entering = false;
         hitted = false;
         lives = 3;
-
+        initSounds();
         definePlayer();
         defineAnimations(screen);
 
@@ -74,12 +75,7 @@ public class Player extends Sprite implements Drawable, Telegraph {
     }
 
     public void attack(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             attacking = true;
-        }
-
-
-
     }
 
     @Override
@@ -170,6 +166,8 @@ public class Player extends Sprite implements Drawable, Telegraph {
     }
     public void die(){
         dead = true;
+        b2body.setAwake(false);
+        deathSound.play();
     }
 
     public static void Interact(InteractiveObjects object) {
@@ -188,6 +186,11 @@ public class Player extends Sprite implements Drawable, Telegraph {
 
     public static InteractiveObjects getCanInteractWithNow(InteractiveObjects objects) {
         return canInteractWith;
+    }
+
+    private void initSounds(){
+        deathSound = screen.initSound("death.mp3");
+        jumpSound = screen.initSound("jump.ogg");
     }
 
     public TextureRegion getFrame(float dt) {
@@ -289,37 +292,24 @@ public class Player extends Sprite implements Drawable, Telegraph {
     }
 
     public void definePlayer() {
-        BodyDef bdef = new BodyDef();
         dead = false;
+        Box2DCreator creator = screen.getBoxCreator();
 
-        bdef.position.set(200 / Platformer.PPM, 100 / Platformer.PPM);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
+        b2body = creator.createDynamicBody(200 / Platformer.PPM, 100 / Platformer.PPM);
 
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
+        Fixture fixture = creator.createSquareFixture(b2body, WIDTH / 2, HEIGHT / 2);
+        fixture.setFilterData(creator.createFilter(fixture, Platformer.PLAYER_BIT,
+                Platformer.DEFAULT_BIT, Platformer.ENEMY_BIT, Platformer.PLATFORM_BIT, Platformer.DOOR_BIT, Platformer.ITEM_BIT));
 
-        shape.setAsBox(WIDTH / 2, HEIGHT / 2);
-        fdef.shape = shape;
-        fdef.restitution = 0;
-        fdef.friction = 0;
-        fdef.density = 0;
-        
-        fdef.filter.categoryBits = Platformer.PLAYER_BIT;
-        fdef.filter.maskBits = Platformer.DEFAULT_BIT | Platformer.ENEMY_BIT | Platformer.PLATFORM_BIT | Platformer.DOOR_BIT | Platformer.ITEM_BIT;
+        fixture.setUserData(this);
 
-        b2body.createFixture(fdef).setUserData(this);
+        fixture = creator.createSquareFixture(b2body, 30 / Platformer.PPM, 0,
+                15 / Platformer.PPM, 10 / Platformer.PPM, 0, true, 0,0,0);
+        fixture.setUserData("AttackRight");
 
-        fdef.isSensor = true;
-
-        EdgeShape hitBox = new EdgeShape();
-
-        fdef.shape = shape;
-        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(30 / Platformer.PPM, 0), 0);
-        b2body.createFixture(fdef).setUserData("AttackRight");
-        shape.setAsBox(15 / Platformer.PPM, 10 / Platformer.PPM, new Vector2(-30 / Platformer.PPM, 0), 0);
-        fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData("AttackLeft");
+        fixture = creator.createSquareFixture(b2body, -30 / Platformer.PPM, 0,
+                15 / Platformer.PPM, 10 / Platformer.PPM, 0, true,0,0,0);
+        fixture.setUserData("AttackLeft");
     }
 
     public void defineAnimations(PlatScreen screen) {
